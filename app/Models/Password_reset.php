@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Provider extends Model
+class Password_reset extends Model
 {
     use SoftDeletes;
 
     use HasFactory;
 
-    public $table = 'providers';
+    public $table = 'password_resets';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -21,18 +21,8 @@ class Provider extends Model
     protected $dates = ['deleted_at'];
 
     public $fillable = [
-        'provider_type',
-        'name',
         'email',
-        'phone_no',
-        'gender',
-        'department',
-        'country',
-        'state',
-        'town_city',
-        'password',
-        'remember_token',
-        'image'
+        'otp'
     ];
 
     /**
@@ -41,19 +31,8 @@ class Provider extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'provider_type' => 'string',
-        'name' => 'string',
         'email' => 'string',
-        'phone_no' => 'string',
-        'gender' => 'string',
-        'department' => 'string',
-        'country' => 'string',
-        'state' => 'string',
-        'town_city' => 'string',
-        'password' => 'string',
-        'remember_token' => 'string',
-        'image' => 'string'
+        'otp' => 'string'
     ];
 
     /**

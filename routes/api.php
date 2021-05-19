@@ -24,4 +24,6 @@ Route::post('/login', [ProviderController::class, 'login']);
 Route::post('/Verification', [ProviderController::class, 'forgotPassword']);
 Route::post('/setNewPassword', [ProviderController::class, 'verifyAndNewPassword']);
 Route::post('/editProfile', [ProviderController::class, 'update']);
+Route::post('/forgotPassword', [ProviderController::class, 'forgotPassword']);
+Route::post('/newPassword', [ProviderController::class, 'newPassword']);
 Route::get('/getProfile', [ProviderController::class, 'profile']);
