@@ -231,6 +231,11 @@ class ProviderController extends Controller
                 'country' => $existingUser->country,
                 'state' => $existingUser->state,
                 'town_city' => $existingUser->town_city,
+                'open_from' => $existingUser->open_from,
+                'open_to' => $existingUser->open_to,
+                'reapeat_schedule' => $existingUser->reapeat_schedule,
+                'zipcode' => $existingUser->zipcode,
+                'building_no' => $existingUser->building_no,
                 'details' => $existingUser->detail,
                 'images' => $imageArr,
             ]);
