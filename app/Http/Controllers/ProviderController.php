@@ -35,11 +35,11 @@ class ProviderController extends Controller
             'name' => 'required',
             'email' => 'required',
             'phone_no' => 'required',
-            'gender' => 'required',
-            'department' => 'required',
-            'country' => 'required',
-            'state' => 'required',
-            'town_city' => 'required',
+            // 'gender' => 'required',
+            // 'department' => 'required',
+            // 'country' => 'required',
+            // 'state' => 'required',
+            // 'town_city' => 'required',
             'password' => 'required'
         ]);
         if ($validator->fails()) {
@@ -64,10 +64,18 @@ class ProviderController extends Controller
                 $newUser->state = $request->state;
                 $newUser->town_city = $request->town_city;
                 $newUser->password = $request->password;
+                $newUser->zipcode = $request->zipcode;
+                $newUser->building_no = $request->building_no;
+                $newUser->open_from = $request->open_from;
+                $newUser->open_to = $request->open_to;
+                $splist = $request->reapeat_schedule;
+                $newUser->reapeat_schedule = str_replace(str_split('\\/:*?"<>|[]"'), '', $splist);
+                // $newUser->reapeat_schedule = $request->reapeat_schedule;
                 $token = (string)mt_rand(100,1000000);
                 $token_en = Crypt::encrypt($token);
                 $newUser->remember_token = $token_en;
                 $newUser->password = Hash::make($request->password);
+                $newUser->dr_choice = $request->dr_choice;
                 // $newUser->username = $user_name[0].$randomString;
                 $newUser->save();
                 

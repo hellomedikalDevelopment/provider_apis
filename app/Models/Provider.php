@@ -32,7 +32,12 @@ class Provider extends Model
         'town_city',
         'password',
         'remember_token',
-        'image'
+        'image',
+        'open_from',
+        'open_to',
+        'reapeat_schedule',
+        'zipcode',
+        'building_no'
     ];
 
     /**
@@ -53,7 +58,10 @@ class Provider extends Model
         'town_city' => 'string',
         'password' => 'string',
         'remember_token' => 'string',
-        'image' => 'string'
+        'image' => 'string',
+        'open_from' => 'string',
+        'open_to' => 'string',
+        'reapeat_schedule' => 'string'
     ];
 
     /**
