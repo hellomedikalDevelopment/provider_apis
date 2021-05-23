@@ -63,7 +63,7 @@ class ProviderController extends Controller
                 $newUser->country = $request->country;
                 $newUser->state = $request->state;
                 $newUser->town_city = $request->town_city;
-                $newUser->password = $request->password;
+                // $newUser->password = $request->password;
                 $newUser->zipcode = $request->zipcode;
                 $newUser->building_no = $request->building_no;
                 $newUser->open_from = $request->open_from;
@@ -76,6 +76,11 @@ class ProviderController extends Controller
                 $newUser->remember_token = $token_en;
                 $newUser->password = Hash::make($request->password);
                 $newUser->dr_choice = $request->dr_choice;
+                $newUser->reapeat = $request->reapeat;
+                $spelist = $request->specialization;
+                $newUser->specialization = str_replace(str_split('\\/:*?"<>|[]"'), '', $spelist);
+                // $newUser->specialization = $request->specialization;
+                $newUser->area = $request->area;
                 // $newUser->username = $user_name[0].$randomString;
                 $newUser->save();
                 
@@ -109,7 +114,8 @@ class ProviderController extends Controller
                     return response()->json([
                         'status' => '1',
                         'message'=>'Logged in successfully', 
-                        'user_id'=>(String)$existingUser->id, 
+                        'user_id'=>(String)$existingUser->id,
+                        'provider_type'=>$existingUser->provider_type,
                         'name'=>$existingUser->name,
                         'email'=>$existingUser->email,
                         'token'=>$existingUser->remember_token,
@@ -236,7 +242,10 @@ class ProviderController extends Controller
                 'reapeat_schedule' => $existingUser->reapeat_schedule,
                 'zipcode' => $existingUser->zipcode,
                 'building_no' => $existingUser->building_no,
-                'details' => $existingUser->detail,
+                'reapeat' => $existingUser->reapeat,
+                'specialization' => $existingUser->specialization,
+                'area' => $existingUser->area,
+                // 'details' => $existingUser->detail,
                 'images' => $imageArr,
             ]);
         }
