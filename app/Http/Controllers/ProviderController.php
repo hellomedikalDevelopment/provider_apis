@@ -161,49 +161,58 @@ class ProviderController extends Controller
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], $this->successStatus);
         }
         else{
-            $userExist = Providerdetail::where('provider_id',$saveArray['provider_id'])->first();
+            $userExist = Provider::where('id',$saveArray['provider_id'])->first();
             if($userExist){
 
+                if($request->hasFile('profile_image')){
+                    $image = time().$request->profile_image->getClientOriginalName();
+                    $request->profile_image->move(public_path('/storage/provider_images') . '/', $image);
+                }else{
+                    $image = $userExist['profile_image'];
+                }
+
                 $data = [];
-                if($request->hasfile('image')){
-                    foreach($request->file('image') as $key=>$file){
+                if($request->hasfile('images')){
+                    foreach($request->file('images') as $key=>$file){
                         $name= time().$file->getClientOriginalName();    
                         $file->move(public_path('/storage/provider_media/') . '/', $name);    
                         $data[$key] = $name;
                         $file= new ProviderImage();
-                        $file->provider_id = $userExist->provider_id;
+                        $file->provider_id = $userExist->id;
                         $file->image = $data[$key];
                         $file->save();
                     }
                 }
 
-                $splist = $saveArray['specialization_list'];
+                $splist = $saveArray['specialization'];
                 $new_splist = str_replace(str_split('\\/:*?"<>|[]"'), '', $splist);
-                $lalist = $saveArray['languages_list'];
+                $lalist = $saveArray['languages'];
                 $new_lalist = str_replace(str_split('\\/:*?"<>|[]"'), '', $lalist);
 
                 $updateProfile = [
-                    'pro_name'=>$saveArray['pro_name']?$saveArray['pro_name']:$userExist['pro_name'],
-                    'pro_email'=>$saveArray['pro_email']?$saveArray['pro_email']:$userExist['pro_email'],
-                    'pro_phone'=>$saveArray['pro_phone']?$saveArray['pro_phone']:$userExist['pro_phone'],
+                    'name'=>$saveArray['name']?$saveArray['name']:$userExist['name'],
+                    'gender'=>$saveArray['gender']?$saveArray['gender']:$userExist['gender'],
+                    'phone_no'=>$saveArray['phone_no']?$saveArray['phone_no']:$userExist['phone_no'],
                     'department'=>$saveArray['department']?$saveArray['department']:$userExist['department'],
-                    'specialization'=>$saveArray['specialization']?$saveArray['specialization']:$userExist['specialization'],
-                    'specialization_list'=>$new_splist?$new_splist:$userExist['specialization_list'],
                     'country'=>$saveArray['country']?$saveArray['country']:$userExist['country'],
                     'state'=>$saveArray['state']?$saveArray['state']:$userExist['state'],
-                    'city'=>$saveArray['city']?$saveArray['city']:$userExist['city'],
+                    'town_city'=>$saveArray['town_city']?$saveArray['town_city']:$userExist['town_city'],
                     'zipcode'=>$saveArray['zipcode']?$saveArray['zipcode']:$userExist['zipcode'],
-                    'address'=>$saveArray['address']?$saveArray['address']:$userExist['address'],
+                    'building_no'=>$saveArray['building_no']?$saveArray['building_no']:$userExist['building_no'],
+                    'open_from'=>$saveArray['open_from']?$saveArray['open_from']:$userExist['open_from'],
+                    'open_to'=>$saveArray['open_to']?$saveArray['open_to']:$userExist['open_to'],
+                    'reapeat_schedule'=>$saveArray['reapeat_schedule']?$saveArray['reapeat_schedule']:$userExist['reapeat_schedule'],
+                    'specialization'=>$new_splist?$new_splist:$userExist['specialization'],
+                    'area'=>$saveArray['area']?$saveArray['area']:$userExist['area'],
                     'education'=>$saveArray['education']?$saveArray['education']:$userExist['education'],
                     'training'=>$saveArray['training']?$saveArray['training']:$userExist['training'],
-                    'provider_gender'=>$saveArray['provider_gender']?$saveArray['provider_gender']:$userExist['provider_gender'],
-                    'languages'=>$saveArray['languages']?$saveArray['languages']:$userExist['languages  '],
-                    'languages_list'=>$new_lalist?$new_lalist:$userExist['languages_list'],
+                    'profile_image'=>$image,
+                    'languages'=>$new_lalist?$new_lalist:$userExist['languages'],
                     'updated_at'=>date('Y-m-d h:i:s')
                 ];
-                $update = Providerdetail::where('provider_id', $saveArray['provider_id'])->update($updateProfile);
+                $update = Provider::where('id', $saveArray['provider_id'])->update($updateProfile);
                 return response()->json(['status'=>'1','message'=>'Profile Updated',
-                ], $this->successStatus);
+            ], $this->successStatus);
             }else{
                 return response()->json(['status'=>'0','message'=>'Provider Not Found',
                 ], $this->successStatus);
