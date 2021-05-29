@@ -188,6 +188,8 @@ class ProviderController extends Controller
                 $new_splist = str_replace(str_split('\\/:*?"<>|[]"'), '', $splist);
                 $lalist = $saveArray['languages'];
                 $new_lalist = str_replace(str_split('\\/:*?"<>|[]"'), '', $lalist);
+                $schlist = $request->reapeat_schedule;
+                $reapeat_schedule = str_replace(str_split('\\/:*?"<>|[]"'), '', $schlist);
 
                 $updateProfile = [
                     'name'=>$saveArray['name']?$saveArray['name']:$userExist['name'],
@@ -201,7 +203,7 @@ class ProviderController extends Controller
                     'building_no'=>$saveArray['building_no']?$saveArray['building_no']:$userExist['building_no'],
                     'open_from'=>$saveArray['open_from']?$saveArray['open_from']:$userExist['open_from'],
                     'open_to'=>$saveArray['open_to']?$saveArray['open_to']:$userExist['open_to'],
-                    'reapeat_schedule'=>$saveArray['reapeat_schedule']?$saveArray['reapeat_schedule']:$userExist['reapeat_schedule'],
+                    'reapeat_schedule'=>$reapeat_schedule?$reapeat_schedule:$userExist['reapeat_schedule'],
                     'specialization'=>$new_splist?$new_splist:$userExist['specialization'],
                     'area'=>$saveArray['area']?$saveArray['area']:$userExist['area'],
                     'education'=>$saveArray['education']?$saveArray['education']:$userExist['education'],
@@ -254,6 +256,10 @@ class ProviderController extends Controller
                 'reapeat' => $existingUser->reapeat,
                 'specialization' => $existingUser->specialization,
                 'area' => $existingUser->area,
+                'training' => $existingUser->training,
+                'languages' => $existingUser->languages,
+                'education' => $existingUser->education,
+                'profile_image' => url('/').'/storage/provider_images/'.$existingUser->profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
             ]);
