@@ -270,6 +270,7 @@ class ProviderController extends Controller
                 'license' => $existingUser->license,
                 'certification' => $existingUser->certification,
                 'aboutyourself' => $existingUser->aboutyourself,
+                'profile_completion' => '25',
                 'profile_image' => url('/').'/storage/provider_images/'.$existingUser->profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
