@@ -190,6 +190,8 @@ class ProviderController extends Controller
                 $new_lalist = str_replace(str_split('\\/:*?"<>|[]"'), '', $lalist);
                 $schlist = $request->reapeat_schedule;
                 $reapeat_schedule = str_replace(str_split('\\/:*?"<>|[]"'), '', $schlist);
+                $aflist = $saveArray['affilation'];
+                $new_aflist = str_replace(str_split('\\/:*?"<>|[]"'), '', $aflist);
 
                 $updateProfile = [
                     'name'=>$saveArray['name']?$saveArray['name']:$userExist['name'],
@@ -208,6 +210,10 @@ class ProviderController extends Controller
                     'area'=>$saveArray['area']?$saveArray['area']:$userExist['area'],
                     'education'=>$saveArray['education']?$saveArray['education']:$userExist['education'],
                     'training'=>$saveArray['training']?$saveArray['training']:$userExist['training'],
+                    'affilation'=>$new_aflist?$new_aflist:$userExist['affilation'],
+                    'license'=>$saveArray['license']?$saveArray['license']:$userExist['license'],
+                    'certification'=>$saveArray['certification']?$saveArray['certification']:$userExist['certification'],
+                    'aboutyourself'=>$saveArray['aboutyourself']?$saveArray['aboutyourself']:$userExist['aboutyourself'],
                     'profile_image'=>$image,
                     'languages'=>$new_lalist?$new_lalist:$userExist['languages'],
                     'updated_at'=>date('Y-m-d h:i:s')
@@ -241,6 +247,7 @@ class ProviderController extends Controller
             }
             return response()->json(['status'=>'1','message'=>'Provider fetched successfully',
                 'provider_type' => $existingUser->provider_type,
+                'name' => $existingUser->name,
                 'email' => $existingUser->email,
                 'phone' => $existingUser->phone_no,
                 'gender' => $existingUser->gender,
@@ -259,6 +266,10 @@ class ProviderController extends Controller
                 'training' => $existingUser->training,
                 'languages' => $existingUser->languages,
                 'education' => $existingUser->education,
+                'affilation' => $existingUser->affilation,
+                'license' => $existingUser->license,
+                'certification' => $existingUser->certification,
+                'aboutyourself' => $existingUser->aboutyourself,
                 'profile_image' => url('/').'/storage/provider_images/'.$existingUser->profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
