@@ -975,4 +975,25 @@ $start_time = $start->format('H:i'); // Get time Format in Hour and minutes
 
     
         }
+    public function deleteProviderImages(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+            'providers_id' => 'required',
+            'image_id' => 'required'
+            
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 400);
+        }
+        else{
+                $res=ProviderImage::where(array('id'=>$request->image_id,'provider_id'=>$request->providers_id))->delete();
+                if($res){
+
+                  return response()->json(['message'=>"delete image successfully",'status'=>'1'], 200);
+                 }else{
+                    return response()->json(['message'=>"opration fail",'status'=>'0'], 200);
+                 }
+            }    
+    }          
 }
