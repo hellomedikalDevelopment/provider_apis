@@ -18,7 +18,7 @@ use App\Http\Controllers\ProviderController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+  
 Route::post('/createAccount', [ProviderController::class, 'register']);
 Route::post('/login', [ProviderController::class, 'login']);
 Route::post('/Verification', [ProviderController::class, 'forgotPassword']);
