@@ -254,6 +254,11 @@ class ProviderController extends Controller
                 $imglist['image'] = $images;
                 $imageArr[] = $imglist;
             }
+            if($existingUser->profile_image!=''){
+              $profile_image=url('/').'/storage/provider_images/'.$existingUser->profile_image;
+             }else{
+                $profile_image='';
+             }
             $complteteUser = Provider::select('name','email','phone_no','gender','department','country','state','town_city','zipcode','building_no','area','specialization','training','languages','education','affilation','license','certification','aboutyourself','profile_image')->where(['remember_token'=>$token_de])->first();
             
             return response()->json(['status'=>'1','message'=>'Provider fetched successfully','data'=>[
@@ -285,7 +290,7 @@ class ProviderController extends Controller
                 'address_type' => $existingUser->address_type,
                 'visit_type'=> str_replace(str_split('\\/:*?"<>|[]"'), '', $existingUser->visit_type),
                 'profile_completion' => strval($this->calculate_profile($complteteUser)),
-                'profile_image' => url('/').'/storage/provider_images/'.$existingUser->profile_image,
+                'profile_image' => $profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
             ]]);
@@ -874,8 +879,8 @@ class ProviderController extends Controller
 						return response()->json(["status"=>"1","data"=>$Slots]);
 					 }else{
 
-                              if($dataInArray[$day]['morning']['to']!='' && $dataInArray[$day]['mid']['to']!='' 
-                                    && $dataInArray[$day]['evening']['to']!=''){
+                              /*if($dataInArray[$day]['morning']['to']!='' && $dataInArray[$day]['mid']['to']!='' 
+                                    && $dataInArray[$day]['evening']['to']!=''){*/
                       
                    
                      if($dataInArray[$day]['morning']['to']!='' && $dataInArray[$day]['morning']['from']!=''){ 
@@ -925,10 +930,10 @@ class ProviderController extends Controller
 
                         return response()->json(["status"=>"1","data"=>$Slots]);
 						 
-					 }else{
+					 /*}else{
                         return response()->json(["status"=>"0","Message"=>"No slot"]);
 
-                     }
+                     }*/
 					
 				  } 
 			
@@ -991,6 +996,28 @@ $start_time = $start->format('H:i'); // Get time Format in Hour and minutes
                 if($res){
 
                   return response()->json(['message'=>"delete image successfully",'status'=>'1'], 200);
+                 }else{
+                    return response()->json(['message'=>"opration fail",'status'=>'0'], 200);
+                 }
+            }    
+    }     
+
+    public function deleteProviderProfileImages(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+            'providers_id' => 'required'
+            
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 400);
+        }
+        else{
+                
+                $affected = DB::table('providers')->where('id', $request->providers_id)->update(['profile_image' =>'']);
+               
+                if($affected){
+
+                   return response()->json(['status'=>'1','message'=>'Profile Updated',], 200);
                  }else{
                     return response()->json(['message'=>"opration fail",'status'=>'0'], 200);
                  }

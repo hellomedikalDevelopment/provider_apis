@@ -35,3 +35,4 @@ Route::post('/deleteSchedule', [ProviderController::class, 'deleteSchedule']);
 Route::post('/customerSupport', [ProviderController::class, 'customerSupport']);
 Route::post('/deleteAccount', [ProviderController::class, 'deleteAccount']);
 Route::post('/deleteProviderImages', [ProviderController::class, 'deleteProviderImages']);
+Route::post('/deleteProviderProfileImages', [ProviderController::class, 'deleteProviderProfileImages']);
