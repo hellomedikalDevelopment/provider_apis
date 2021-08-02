@@ -132,7 +132,7 @@ class ProviderController extends Controller
              }else{
                 $profile_image='';
              }
-            $complteteUser = Provider::select('name','email','phone_no','gender','department','country','state','town_city','zipcode','building_no','area','specialization','training','languages','education','affilation','license','certification','aboutyourself','profile_image')->where(['remember_token'=>$token_de])->first();
+            $complteteUser = Provider::select('name','email','phone_no','gender','department','country','state','town_city','zipcode','building_no','area','specialization','training','languages','education','affilation','license','certification','aboutyourself','profile_image')->where(['remember_token'=>$existingUser->remember_token])->first();
             
             return response()->json(['status'=>'1','message'=>'Provider fetched successfully','token'=>$existingUser->remember_token,'data'=>[
                 'id' => $existingUser->id,
