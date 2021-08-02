@@ -118,6 +118,21 @@ class ProviderController extends Controller
             ->first();
             if($existingUser){
                 if(Hash::check($request->password , $existingUser['password'])){
+                    $existingUser->load('detail');
+            $existingUser->load('images');
+            $imageArr = [];
+            foreach ($existingUser->images as $image) {
+                $images = url('/').'/storage/provider_media/'.$image->image;
+                $imglist['id'] = $image['id'];
+                $imglist['image'] = $images;
+                $imageArr[] = $imglist;
+            }
+            if($existingUser->profile_image!=''){
+              $profile_image=url('/').'/storage/provider_images/'.$existingUser->profile_image;
+             }else{
+                $profile_image='';
+             }
+            $complteteUser = Provider::select('name','email','phone_no','gender','department','country','state','town_city','zipcode','building_no','area','specialization','training','languages','education','affilation','license','certification','aboutyourself','profile_image')->where(['remember_token'=>$token_de])->first();
                     return response()->json(['status'=>'1','message'=>'Provider fetched successfully','token'=>$existingUser->remember_token,'data'=>[
                 'id' => $existingUser->id,
                 'provider_type' => $existingUser->provider_type,
@@ -146,7 +161,7 @@ class ProviderController extends Controller
                 'aboutyourself' => $existingUser->aboutyourself,
                 'address_type' => $existingUser->address_type,
                 'visit_type'=> str_replace(str_split('\\/:*?"<>|[]"'), '', $existingUser->visit_type),
-                'profile_completion' => '',
+                'profile_completion' => strval($this->calculate_profile($complteteUser)),
                 'profile_image' => $profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
