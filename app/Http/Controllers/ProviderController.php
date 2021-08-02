@@ -118,16 +118,40 @@ class ProviderController extends Controller
             ->first();
             if($existingUser){
                 if(Hash::check($request->password , $existingUser['password'])){
-                    return response()->json([
-                        'status' => '1',
-                        'message'=>'Logged in successfully', 
-                       /* 'user_id'=>(String)$existingUser->id,
-                        'provider_type'=>$existingUser->provider_type,
-                        'name'=>$existingUser->name,
-                        'email'=>$existingUser->email,*/
-                        'token'=>$existingUser->remember_token,
-                        'data'=>$existingUser,
-                    ], $this->successStatus);
+                    return response()->json(['status'=>'1','message'=>'Provider fetched successfully','token'=>$existingUser->remember_token,'data'=>[
+                'id' => $existingUser->id,
+                'provider_type' => $existingUser->provider_type,
+                'name' => $existingUser->name,
+                'email' => $existingUser->email,
+                'phone' => $existingUser->phone_no,
+                'gender' => $existingUser->gender,
+                'department' => $existingUser->department,
+                'country' => $existingUser->country,
+                'state' => $existingUser->state,
+                'town_city' => $existingUser->town_city,
+                'open_from' => $existingUser->open_from,
+                'open_to' => $existingUser->open_to,
+                'reapeat_schedule' => $existingUser->reapeat_schedule,
+                'zipcode' => $existingUser->zipcode,
+                'building_no' => $existingUser->building_no,
+                'reapeat' => $existingUser->reapeat,
+                'specialization' => $existingUser->specialization,
+                'area' => $existingUser->area,
+                'training' => $existingUser->training,
+                'languages' => $existingUser->languages,
+                'education' => $existingUser->education,
+                'affilation' => $existingUser->affilation,
+                'license' => $existingUser->license,
+                'certification' => $existingUser->certification,
+                'aboutyourself' => $existingUser->aboutyourself,
+                'address_type' => $existingUser->address_type,
+                'visit_type'=> str_replace(str_split('\\/:*?"<>|[]"'), '', $existingUser->visit_type),
+                'profile_completion' => strval($this->calculate_profile($complteteUser)),
+                'profile_image' => $profile_image,
+                // 'details' => $existingUser->detail,
+                'images' => $imageArr,
+            ]]);
+                    
                 }else {
                   return response()->json(['message'=>'Email or Password is incorrect','status'=>'0'], $this->successStatus);
                 }
