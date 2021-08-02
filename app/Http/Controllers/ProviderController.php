@@ -146,7 +146,7 @@ class ProviderController extends Controller
                 'aboutyourself' => $existingUser->aboutyourself,
                 'address_type' => $existingUser->address_type,
                 'visit_type'=> str_replace(str_split('\\/:*?"<>|[]"'), '', $existingUser->visit_type),
-                'profile_completion' => strval($this->calculate_profile($complteteUser)),
+                'profile_completion' => '',
                 'profile_image' => $profile_image,
                 // 'details' => $existingUser->detail,
                 'images' => $imageArr,
