@@ -27,7 +27,7 @@ class customerSupport extends Model
         'phone_no',
         'subject',
         'message',
-        'image',
+        'image1',
         ];
 
     
