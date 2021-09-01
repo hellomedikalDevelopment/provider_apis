@@ -9,7 +9,7 @@ use App\Models\Clinic_doctors;
 
 class ProviderClinics extends Controller
 {
-  public function getDoctorsList($clinic_id)
+  public function getDoctorsList()
   {
      
     $doctors=Provider::where(['provider_type'=>1])->get();
