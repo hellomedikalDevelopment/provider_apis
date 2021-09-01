@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ProviderClinics;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,14 @@ Route::post('/deleteProviderImages', [ProviderController::class, 'deleteProvider
 Route::post('/deleteProviderProfileImages', [ProviderController::class, 'deleteProviderProfileImages']);
 Route::post('/setNewSchedule', [ProviderController::class, 'setNewSchedule']);  
 Route::post('/getNewSchedule', [ProviderController::class, 'getNewSchedule']);
+
+// clinic section
+Route::get('/getDoctorList', [ProviderClinics::class, 'getDoctorsList']);
+Route::post('/addDoctorInClinic', [ProviderClinics::class, 'addDoctorByClinic']);
+Route::get('/getClinicDoctors/{clinic_id}', [ProviderClinics::class, 'getClinicDoctors']);
+Route::Post('/setScheduleByClinic', [ProviderClinics::class, 'setScheduleByClinic']);
+Route::Post('/viewDoctorShedualForClinic', [ProviderClinics::class, 'viewDoctorShedualForClinic']);
+
 
 /*User end*/
 
