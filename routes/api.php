@@ -48,6 +48,8 @@ Route::post('/addDoctorInClinic', [ProviderClinics::class, 'addDoctorByClinic'])
 Route::get('/getClinicDoctors/{clinic_id}', [ProviderClinics::class, 'getClinicDoctors']);
 Route::Post('/setScheduleByClinic', [ProviderClinics::class, 'setScheduleByClinic']);
 Route::Post('/viewDoctorShedualForClinic', [ProviderClinics::class, 'viewDoctorShedualForClinic']);
+Route::Post('/addDoctorRequest', [ProviderClinics::class, 'addDoctorRequest']);
+
 
 
 /*User end*/
