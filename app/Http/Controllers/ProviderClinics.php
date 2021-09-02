@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Provider;
 use Validator;
 use App\Models\Clinic_doctors;
+use Illuminate\Support\Facades\Mail;
 
 class ProviderClinics extends Controller
 {
