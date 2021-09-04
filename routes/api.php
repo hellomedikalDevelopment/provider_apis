@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
   
 Route::post('/createAccount', [ProviderController::class, 'register']);
-Route::post('/login', [ProviderController::class, 'login']);
+Route::post('/loginProvider', [ProviderController::class, 'login']);
 Route::post('/Verification', [ProviderController::class, 'forgotPassword']);
 Route::post('/setNewPassword', [ProviderController::class, 'verifyAndNewPassword']);
 Route::post('/editProfile', [ProviderController::class, 'update']);
