@@ -679,7 +679,7 @@ class ApiController extends Controller
         }
         
         
-        $url = url('public/images');
+        $url = url('/images');
 
         $user = User::where(['id'=>$request->user_id])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
          
