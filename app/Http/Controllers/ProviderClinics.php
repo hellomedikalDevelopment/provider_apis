@@ -19,7 +19,7 @@ class ProviderClinics extends Controller
                     'message'=>'doctors list',
                     'data'=>  $doctors
                 ], 200);
-  }
+  }   
 
   
   public function addDoctorRequest(Request $request)
