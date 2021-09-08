@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Provider;
 use Validator;
 use App\Models\Clinic_doctors;
-
+use Illuminate\Support\Facades\Mail;
 class ProviderClinics extends Controller
 {
   public function getDoctorsList($clinic_id)
@@ -37,7 +37,7 @@ class ProviderClinics extends Controller
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 200);
         }
         else{
-     $doctor=Provider::where(['id'=>$request->doctor_id])->get();
+     $doctor=Provider::where(['id'=>$request->doctor_id])->first();
             $doctor_email= $doctor->email;
             $otp = rand (1000 , 9999);
             $msg = [
