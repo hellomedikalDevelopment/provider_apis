@@ -6,20 +6,26 @@ use Illuminate\Http\Request;
 use App\Models\Provider;
 use Validator;
 use App\Models\Clinic_doctors;
-use Illuminate\Support\Facades\Mail;
 
 class ProviderClinics extends Controller
 {
-  public function getDoctorsList()
+  public function getDoctorsList($clinic_id)
   {
-     
-    $doctors=Provider::where(['provider_type'=>1])->get();
+   
+      $store=[];
+     $doctorsPersent=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id])->get();
+     foreach($doctorsPersent as $d){
+            $store[]=$d->doctor_id;
+     } 
+    $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
+          ->get();
+
     return response()->json([
                     'status'=>'1',
                     'message'=>'doctors list',
                     'data'=>  $doctors
                 ], 200);
-  }   
+  }
 
   
   public function addDoctorRequest(Request $request)
@@ -31,7 +37,7 @@ class ProviderClinics extends Controller
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 200);
         }
         else{
-     $doctor=Provider::where(['id'=>$request->doctor_id])->first();
+     $doctor=Provider::where(['id'=>$request->doctor_id])->get();
             $doctor_email= $doctor->email;
             $otp = rand (1000 , 9999);
             $msg = [
@@ -110,10 +116,10 @@ public function setScheduleByClinic(Request $request)
            {
              $Days=array("Sun"=>'',"Mon"=>'',"Tue"=>'',"Wed"=>'',"Thu"=>'',"Fri"=>'',"Sat"=>'');
                 
-                $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeat']));
+                $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeate']));
                   
             
-                $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeat']);
+                $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeate']);
                 $repat = explode(',', $repats);
 
                 if($repat[0]!='')
@@ -174,10 +180,10 @@ public function setScheduleByClinic(Request $request)
                    {
                       
                        // $Days=array("Sun"=>'',"Mon"=>'',"Tue"=>'',"Wed"=>'',"Thu"=>'',"Fri"=>'',"Sat"=>'');
-                    $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeat']));
+                    $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeate']));
                         
                           
-                         $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeat']);
+                         $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeate']);
                          $repats=str_replace(' ', '', $repats);
                          
                          $repat = explode(',', $repats);
@@ -382,4 +388,45 @@ public function setScheduleByClinic(Request $request)
                 }
             }
     }   
+
+   public function serchProvider(Request $request)
+    {
+         $validator = Validator::make($request->all(), [
+                'clinic_id' => 'required',
+                'keyword' => 'required',
+              ]);
+            if ($validator->fails()) {
+                return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 200);
+            }
+            else{
+                    $store=[];
+                     $Clinic_doctors=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$request->clinic_id],['date_wise','!=',NULL])->get();
+                     foreach($Clinic_doctors as $d){
+                            $store[]=$d->doctor_id;
+                     }
+                     $doctors=Provider::whereIn('id', $store)->where('name', 'like', "%$request->keyword%")->orWhere('email', 'like', "%$request->keyword%")->orWhere('phone_no ', 'like', "%$request->keyword%")->->orWhere('department', 'like', "%$request->keyword%")->get();
+                     return response()->json([
+                    'status'=>'1',
+                    'message'=>'doctors list',
+                    'data'=>  $doctors
+                        ], 200);
+                }
+    }
+    public function getShedualedDoctors($clinic_id)
+    {
+        
+                $store=[];
+                     $doctors=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id],['date_wise','!=',NULL])->get();
+                     foreach($doctors as $d){
+                            $store[]=$d->doctor_id;
+                     }
+   
+                       $mydocs=Provider::whereIn('id', $store)->get();
+                        return response()->json([
+                        'status'=>'1',
+                        'data'=>$mydocs,
+                        'message'=>'Clinic Doctors',
+                    ], 200);
+                
+    }    
 }
