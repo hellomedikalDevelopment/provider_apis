@@ -416,11 +416,11 @@ public function setScheduleByClinic(Request $request)
     {
         
                 $store=[];
-                     $doctors=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id],['date_wise','!=',NULL])->get();
+                     $doctors=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id],['date_wise','!=',NULL])->get();   
                      foreach($doctors as $d){
                             $store[]=$d->doctor_id;
                      }
-   
+   print_r( $store);die;
                        $mydocs=Provider::whereIn('id', $store)->get();
                         return response()->json([
                         'status'=>'1',
