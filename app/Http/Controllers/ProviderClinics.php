@@ -116,10 +116,10 @@ public function setScheduleByClinic(Request $request)
            {
              $Days=array("Sun"=>'',"Mon"=>'',"Tue"=>'',"Wed"=>'',"Thu"=>'',"Fri"=>'',"Sat"=>'');
                 
-                $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeate']));
+                $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeat']));
                   
             
-                $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeate']);
+                $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeat']);
                 $repat = explode(',', $repats);
 
                 if($repat[0]!='')
@@ -180,10 +180,10 @@ public function setScheduleByClinic(Request $request)
                    {
                       
                        // $Days=array("Sun"=>'',"Mon"=>'',"Tue"=>'',"Wed"=>'',"Thu"=>'',"Fri"=>'',"Sat"=>'');
-                    $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeate']));
+                    $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeat']));
                         
                           
-                         $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeate']);
+                         $repats = str_replace(str_split('\\/:*?"<>|[]"'), '', $single['repeat']);
                          $repats=str_replace(' ', '', $repats);
                          
                          $repat = explode(',', $repats);
