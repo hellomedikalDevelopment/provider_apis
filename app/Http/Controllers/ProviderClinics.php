@@ -404,7 +404,7 @@ public function setScheduleByClinic(Request $request)
                      foreach($Clinic_doctors as $d){
                             $store[]=$d->doctor_id;
                      }
-                     $doctors=Provider::whereIn('id', $store)->where('name', 'like', "%$request->keyword%")->orWhere('email', 'like', "%$request->keyword%")->orWhere('phone_no ', 'like', "%$request->keyword%")->->orWhere('department', 'like', "%$request->keyword%")->get();
+                     $doctors=Provider::whereIn('id', $store)->where('name', 'like', "%$request->keyword%")->orWhere('email', 'like', "%$request->keyword%")->orWhere('phone_no', 'like', "%$request->keyword%")->orWhere('department', 'like', "%$request->keyword%")->get();
                      return response()->json([
                     'status'=>'1',
                     'message'=>'doctors list',
