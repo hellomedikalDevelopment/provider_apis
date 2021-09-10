@@ -9,7 +9,7 @@ use App\Models\Clinic_doctors;
 use Illuminate\Support\Facades\Mail;
 class ProviderClinics extends Controller
 {
-  public function getDoctorsList($clinic_id,$keyword)
+  public function getDoctorsList($clinic_id,$keyword=null)
   {
    
           $store=[];
@@ -18,7 +18,7 @@ class ProviderClinics extends Controller
          foreach($doctorsPersent as $d){
                 $store[]=$d->doctor_id;}
        
-         if($keyword=='0'){
+         if($keyword==null){
         $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
               ->get();
           }else{
