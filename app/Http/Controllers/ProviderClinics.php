@@ -9,22 +9,29 @@ use App\Models\Clinic_doctors;
 use Illuminate\Support\Facades\Mail;
 class ProviderClinics extends Controller
 {
-  public function getDoctorsList($clinic_id)
+  public function getDoctorsList($clinic_id,$keyword)
   {
    
-      $store=[];
-     $doctorsPersent=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id])->get();
-     foreach($doctorsPersent as $d){
-            $store[]=$d->doctor_id;
-     } 
-    $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
-          ->get();
+          $store=[];
+         
+         $doctorsPersent=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id])->get();
+         foreach($doctorsPersent as $d){
+                $store[]=$d->doctor_id;}
+       
+         if($keyword=='0'){
+        $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
+              ->get();
+          }else{
+         
+              $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->orWhere('phone_no', 'like', "%$keyword%")->orWhere('department', 'like', "%$keyword%")->get();
+          }
 
-    return response()->json([
-                    'status'=>'1',
-                    'message'=>'doctors list',
-                    'data'=>  $doctors
-                ], 200);
+        return response()->json([
+                        'status'=>'1',
+                        'message'=>'doctors list',
+                        'data'=>  $doctors
+                    ], 200);
+          
   }
 
   
