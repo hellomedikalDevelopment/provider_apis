@@ -483,7 +483,7 @@ public function setScheduleByClinic(Request $request)
                                     Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(['date_wise'=>json_encode($dataDataDecode)]); 
                                     return response()->json(['message'=>"Shedual delete successfully",'status'=>'1'], '200');
                        
-                 }else{
+                 }else{ echo "dddd";die;
                     $dayDate=json_decode($allData->day_delete,true);
                     if($dayDate){
                         if(array_key_exists($reciveDate,$dayDate)){
