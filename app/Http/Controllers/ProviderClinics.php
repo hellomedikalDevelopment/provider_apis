@@ -496,7 +496,8 @@ public function setScheduleByClinic(Request $request)
                              
                              $dayDate[$reciveDate]=array($request->type);
                              
-                             Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)));
+                             $d=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)))->toSql();
+                             var_dump($d); die;
                         }
                     }else{
                              $newarray=array($reciveDate=>array($request->type));
