@@ -426,7 +426,7 @@ public function setScheduleByClinic(Request $request)
                     'data'=>  $doctors
                         ], 200);
                 }
-    }
+    }   
     public function getShedualedDoctors($clinic_id,$keyword=null)
     {
         
