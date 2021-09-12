@@ -316,7 +316,7 @@ public function setScheduleByClinic(Request $request)
                   $timestamp = strtotime($covertDate);
                   $day = date('D', $timestamp); 
                   $allData=Clinic_doctors::where(array("doctor_id"=>$request->doctor_id,"clinic_id"=>$request->clinic_id))->first(); 
-                  if(empty($allData)){return response()->json(['status'=>0,'message'=>'clinic and doctor not associated to each other'], 200);}
+                  if(empty($allData)){return response()->json(['status'=>'0','message'=>'clinic and doctor not associated to each other'], 200);}
                   if($allData->date_wise!=NULL){ 
                     $dataDataDecode=json_decode($allData->date_wise,true);//print_r($dataDataDecode);die;
                     if(array_key_exists($reciveDate,$dataDataDecode)){ 
@@ -465,7 +465,7 @@ public function setScheduleByClinic(Request $request)
             $reciveDate=$request->schedule_date;
             $type=$request->type;
            $allData=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->first();
-             if(empty($allData)){return response()->json(['status'=>0,'message'=>'clinic and doctor not associated to each other'], 200);}
+             if(empty($allData)){return response()->json(['status'=>"0",'message'=>'clinic and doctor not associated to each other'], 200);}
                   if($allData){
                     $dataDataDecode=json_decode($allData->date_wise,true);
                     if(array_key_exists($reciveDate,$dataDataDecode)){ 
