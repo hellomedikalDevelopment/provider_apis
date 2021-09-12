@@ -16,7 +16,7 @@ class ProviderClinics extends Controller
          
          $doctorsPersent=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id])->get();
          foreach($doctorsPersent as $d){
-                $store[]=$d->doctor_id;} print_r($store);die;
+                $store[]=$d->doctor_id;}
        
          if($keyword==null){
         $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
@@ -40,7 +40,7 @@ class ProviderClinics extends Controller
      $validator = Validator::make($request->all(), [
             'doctor_id' => 'required',
         ]);
-        if ($validator->fails()) {
+        if ($validator->fails()) {   
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], 200);
         }
         else{
