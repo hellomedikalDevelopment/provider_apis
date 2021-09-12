@@ -292,7 +292,17 @@ class ApiController extends Controller
         }
         $url = url('public/images');
         $checkEmail = User::where(['email'=>$request->email,'is_active'=>1])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
-        
+        if ($request->activate_account == 'true') {
+            $update = User::where(['email'=>$request->email])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
+            if (Hash::check($request->password, $update['password']))
+            {
+                $activateAccount = User::where(['email'=>$request->email])
+                ->update(['is_active'=>'1']);
+                return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $update]); 
+            }else{
+                return response()->json(['status' => 0,'message'=>'Password Mismatched']);   
+            }
+        }
         if($checkEmail){
         
             if (Hash::check($request->password, $checkEmail->password))
