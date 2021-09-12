@@ -51,7 +51,8 @@ Route::Post('/viewDoctorShedualForClinic', [ProviderClinics::class, 'viewDoctorS
 Route::Post('/addDoctorRequest', [ProviderClinics::class, 'addDoctorRequest']);       
 Route::post('/serchProvider', [ProviderClinics::class, 'serchProvider']);
 Route::get('/getShedualedDoctors/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getShedualedDoctors']);
-   
+Route::Post('/deleteScheduleByClinic', [ProviderClinics::class, 'deleteScheduleByClinic']);   
+
 
 
 /*User end*/

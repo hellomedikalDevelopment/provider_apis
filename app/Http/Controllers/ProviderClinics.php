@@ -449,4 +449,63 @@ public function setScheduleByClinic(Request $request)
                     ], 200);
                 
     }    
+
+    public function deleteScheduleByClinic(Request $request)
+    {
+    $validator = Validator::make($request->all(), [
+            'providers_id' => 'required',
+            'clinic_id' => 'required',
+            'type' => 'required',
+            'schedule_date' => 'required',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], $this->successStatus);
+        }
+        else{
+            $reciveDate=$request->schedule_date;
+            $type=$request->type;
+           $allData=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->first();
+             if(empty($allData)){return response()->json(['status'=>0,'message'=>'clinic and doctor not associated to each other'], 200);}
+                  if($allData){
+                    $dataDataDecode=json_decode($allData->date_wise,true);
+                    if(array_key_exists($reciveDate,$dataDataDecode)){ 
+                                   $count= count($dataDataDecode[$reciveDate]);
+                                   
+                                    foreach($dataDataDecode[$reciveDate] as $key=>$value){
+                                      $i = array_search($type, array_keys($value));
+                                       if($i===0){
+                                        $dataDataDecode[$reciveDate][$key][$type]['timing']=[];
+                                       }
+                                    }
+                                
+                                   
+                                 
+                                    DB::table('clinic_doctors')->where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(['date_wise'=>json_encode($dataDataDecode)]); 
+                                    return response()->json(['message'=>"Shedual delete successfully",'status'=>'1'], '200');
+                       
+                 }else{
+                    $dayDate=json_decode($allData->day_delete,true);
+                    if($dayDate){
+                        if(array_key_exists($reciveDate,$dayDate)){
+                                $oldarray=$dayDate[$reciveDate];
+                                array_push($oldarray,$request->type);
+                                $dayDate[$reciveDate]=$oldarray;
+                            Clinic_doctors::where(array(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id)))->update(array('day_delete' => json_encode($dayDate)));  
+
+                        }else{
+                             
+                             $dayDate[$reciveDate]=array($request->type);
+                             
+                             Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)));
+                        }
+                    }else{
+                             $newarray=array($reciveDate=>array($request->type));
+                             Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($newarray)));
+                        }
+                   
+                    return response()->json(['message'=>"Shedual delete successfully1",'status'=>'1'], '200');
+                 }
+             }
+         }
+    }  
 }
