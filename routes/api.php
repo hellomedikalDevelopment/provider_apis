@@ -45,12 +45,12 @@ Route::post('/getNewSchedule', [ProviderController::class, 'getNewSchedule']);
 // clinic section
 Route::get('/getDoctorList/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getDoctorsList']);
 Route::post('/addDoctorInClinic', [ProviderClinics::class, 'addDoctorByClinic']);
-Route::get('/getClinicDoctors/{clinic_id}', [ProviderClinics::class, 'getClinicDoctors']);
+Route::get('/getClinicDoctors/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getClinicDoctors']);
 Route::Post('/setScheduleByClinic', [ProviderClinics::class, 'setScheduleByClinic']);
 Route::Post('/viewDoctorShedualForClinic', [ProviderClinics::class, 'viewDoctorShedualForClinic']);
 Route::Post('/addDoctorRequest', [ProviderClinics::class, 'addDoctorRequest']);       
 Route::post('/serchProvider', [ProviderClinics::class, 'serchProvider']);
-Route::get('/getShedualedDoctors/{clinic_id}', [ProviderClinics::class, 'getShedualedDoctors']);
+Route::get('/getShedualedDoctors/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getShedualedDoctors']);
 
 
 

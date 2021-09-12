@@ -16,7 +16,7 @@ class ProviderClinics extends Controller
          
          $doctorsPersent=Clinic_doctors::select(['doctor_id'])->where(['clinic_id'=>$clinic_id])->get();
          foreach($doctorsPersent as $d){
-                $store[]=$d->doctor_id;}
+                $store[]=$d->doctor_id;} print_r($store);die;
        
          if($keyword==null){
         $doctors=Provider::where(['provider_type'=>1])->whereNotIn('id',$store)
@@ -83,14 +83,18 @@ class ProviderClinics extends Controller
         }
   }
 
-  public function getClinicDoctors($clinic_id)
+  public function getClinicDoctors($clinic_id,$keyword=null)
   {
     $doc_ids=[];
     $data=Clinic_doctors::select('doctor_id')->where(['clinic_id'=>$clinic_id])->get();
     foreach($data as $each){
         $doc_ids[]= $each->doctor_id;
     }
+    if($keyword==null){
     $mydocs=Provider::whereIn('id', $doc_ids)->get();
+    }else{
+    $mydocs=Provider::whereIn('id', $doc_ids)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->orWhere('phone_no', 'like', "%$keyword%")->orWhere('department', 'like', "%$keyword%")->get();
+    }
     return response()->json([
                     'status'=>'1',
                     'data'=>$mydocs,
@@ -309,8 +313,9 @@ public function setScheduleByClinic(Request $request)
                   $timestamp = strtotime($covertDate);
                   $day = date('D', $timestamp); 
                   $allData=Clinic_doctors::where(array("doctor_id"=>$request->doctor_id,"clinic_id"=>$request->clinic_id))->first(); 
-                  if($allData){
-                    $dataDataDecode=json_decode($allData->date_wise,true);
+                  if(empty($allData)){return response()->json(['status'=>0,'message'=>'clinic and doctor not associated to each other'], 200);}
+                  if($allData->date_wise!=NULL){ 
+                    $dataDataDecode=json_decode($allData->date_wise,true);//print_r($dataDataDecode);die;
                     if(array_key_exists($reciveDate,$dataDataDecode)){ 
                         if(isset($dataDataDecode[$reciveDate][0])){
 
@@ -419,7 +424,7 @@ public function setScheduleByClinic(Request $request)
                         ], 200);
                 }
     }
-    public function getShedualedDoctors($clinic_id)
+    public function getShedualedDoctors($clinic_id,$keyword=null)
     {
         
                 $store=[];
@@ -429,8 +434,11 @@ public function setScheduleByClinic(Request $request)
                             $store[]=$d->doctor_id;
                         }
                      }
-  
+                  if($keyword==null){
                        $mydocs=Provider::whereIn('id', $store)->get();
+                   }else{
+                        $mydocs=Provider::whereIn('id', $store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->orWhere('phone_no', 'like', "%$keyword%")->orWhere('department', 'like', "%$keyword%")->get();
+                   }
                         return response()->json([
                         'status'=>'1',
                         'data'=>$mydocs,
