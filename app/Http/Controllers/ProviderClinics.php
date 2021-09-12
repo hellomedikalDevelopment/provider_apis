@@ -480,7 +480,7 @@ public function setScheduleByClinic(Request $request)
                                 
                                    
                                  
-                                    DB::table('clinic_doctors')->where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(['date_wise'=>json_encode($dataDataDecode)]); 
+                                    Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(['date_wise'=>json_encode($dataDataDecode)]); 
                                     return response()->json(['message'=>"Shedual delete successfully",'status'=>'1'], '200');
                        
                  }else{
