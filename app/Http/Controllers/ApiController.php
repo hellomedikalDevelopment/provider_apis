@@ -290,10 +290,8 @@ class ApiController extends Controller
         if ($validator->fails()) { 
             return response()->json(['status' => 0,'message'=>"All fields are required"]); 
         }
-        
-        //$checkEmail = User::where(['email'=>$request->email])->first();
         $url = url('public/images');
-        $checkEmail = User::where(['email'=>$request->email])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
+        $checkEmail = User::where(['email'=>$request->email,'is_active'=>1])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
         
         if($checkEmail){
         
@@ -301,10 +299,10 @@ class ApiController extends Controller
             {
                 return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $checkEmail]); 
             }else{
-                return response()->json(['status' => 0,'message'=>'Invalid Login']);   
+                return response()->json(['status' => 0,'message'=>'Password Mismatched']);   
             }
         }else{
-            return response()->json(['status' => 0,'message'=>'Account Deactivated,']);  
+            return response()->json(['status' => 0,'message'=>'Account Not Registered or Deactivated Please contact support for more information.']);  
         }
         
 
@@ -628,39 +626,43 @@ class ApiController extends Controller
 
 /**************************************************************************/
 
-    public function deactivateAccount(Request $request){ 
-
+    public function deactivateAccount(Request $request){
         $validator = Validator::make($request->all(), [ 
             'user_id' => 'required', 
             'password' => 'required',
+            'type' => 'required'
         ]);
-
         if ($validator->fails()) { 
-            return response()->json(['status' => 0,'message'=>"All fields are required"]);
-        }
-        
-        $user = User::where(['id'=>$request->user_id])->first();
-        
-        if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
-        }
-        
-        if($user){
-        
-            if (Hash::check($request->password, $user->password))
-            {
-                User::where('id', $request->user_id)->delete();
-            
-                return response()->json(['status' => 1,'message' => 'Deactivated Successfully.']); 
-               
-            }else{
-                 return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
-            }
-        
+                return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }else{
-            return response()->json(['status' => 0,'message'=>'Account Deactivated,']);  
+            $user = User::where(['id'=>$request->user_id])->first();
+                
+            if(!$user){
+                return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            }
+
+            if ($request->type === '1') {
+                if (Hash::check($request->password, $user->password))
+                    {
+                        User::where('id', $request->user_id)->delete();
+                    
+                        return response()->json(['status' => 1,'message' => 'Deleted Successfully.']); 
+                       
+                    }else{
+                         return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
+                    }
+            }elseif ($request->type === '2'){
+                if (Hash::check($request->password, $user->password))
+                {
+                    User::where('id', $request->user_id)->update(['is_active'=>'2']);
+                
+                    return response()->json(['status' => 1,'message' => 'Deactivated Successfully.']); 
+                   
+                }else{
+                     return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
+                }
+            }
         }
-        
       
     }
 
