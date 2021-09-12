@@ -430,7 +430,7 @@ public function setScheduleByClinic(Request $request)
     public function getShedualedDoctors($clinic_id,$keyword=null)
     {
         
-                $store=[];
+                $store=[];   
                      $doctors=Clinic_doctors::select(['doctor_id','date_wise'])->where(['clinic_id'=>$clinic_id])->get();   
                      foreach($doctors as $d){ 
                         if($d->date_wise!=NULL){
