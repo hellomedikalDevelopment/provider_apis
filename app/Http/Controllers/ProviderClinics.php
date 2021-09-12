@@ -461,12 +461,12 @@ public function setScheduleByClinic(Request $request)
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], $this->successStatus);
         }
-        else{
+        else{ 
             $reciveDate=$request->schedule_date;
             $type=$request->type;
            $allData=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->first();
              if(empty($allData)){return response()->json(['status'=>"0",'message'=>'clinic and doctor not associated to each other'], 200);}
-                  if($allData){
+                  if($allData){ 
                     $dataDataDecode=json_decode($allData->date_wise,true);
                     if(array_key_exists($reciveDate,$dataDataDecode)){ 
                                    $count= count($dataDataDecode[$reciveDate]);
@@ -486,20 +486,20 @@ public function setScheduleByClinic(Request $request)
                  }else{ 
                     $dayDate=json_decode($allData->day_delete,true);
                     if($dayDate){
-                        if(array_key_exists($reciveDate,$dayDate)){
+                        if(array_key_exists($reciveDate,$dayDate)){ 
                                 $oldarray=$dayDate[$reciveDate];
                                 array_push($oldarray,$request->type);
                                 $dayDate[$reciveDate]=$oldarray;
-                            Clinic_doctors::where(array(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id)))->update(array('day_delete' => json_encode($dayDate)));  
+                            Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)));  
 
                         }else{
                              
                              $dayDate[$reciveDate]=array($request->type);
                              
-                             $d=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)))->toSql();
-                             var_dump($d); die;
+                             $d=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($dayDate)));
+                            
                         }
-                    }else{
+                    }else{ 
                              $newarray=array($reciveDate=>array($request->type));
                              Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$request->clinic_id))->update(array('day_delete' => json_encode($newarray)));
                         }
