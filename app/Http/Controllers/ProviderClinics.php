@@ -25,7 +25,7 @@ class ProviderClinics extends Controller
               ->get();
           }else{
          
-              $doctors=Provider::where(['provider_type'=>"1"])->whereNotIn('id',$store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('phone_no', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('department', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->get();
+              $doctors=Provider::where(['provider_type'=>"1"])->whereNotIn('id',$store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('phone_no', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('department', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->>orWhere('specialization', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->get();
              // var_dump($doctors);
           }
 
@@ -96,7 +96,7 @@ class ProviderClinics extends Controller
     if($keyword==null){
     $mydocs=Provider::whereIn('id', $doc_ids)->get();
     }else{
-    $mydocs=Provider::whereIn('id', $doc_ids)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->whereIn('id', $doc_ids)->orWhere('phone_no', 'like', "%$keyword%")->whereIn('id', $doc_ids)->orWhere('department', 'like', "%$keyword%")->whereIn('id', $doc_ids)->get();
+    $mydocs=Provider::whereIn('id', $doc_ids)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->whereIn('id', $doc_ids)->orWhere('phone_no', 'like', "%$keyword%")->whereIn('id', $doc_ids)->orWhere('department', 'like', "%$keyword%")->whereIn('id', $doc_ids)->orWhere('specialization ', 'like', "%$keyword%")->whereIn('id', $doc_ids)->get();
     }
     return response()->json([
                     'status'=>'1',
@@ -440,7 +440,7 @@ public function setScheduleByClinic(Request $request)
                   if($keyword==null){
                        $mydocs=Provider::whereIn('id', $store)->get();
                    }else{
-                        $mydocs=Provider::whereIn('id', $store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->whereIn('id', $store)->orWhere('phone_no', 'like', "%$keyword%")->whereIn('id', $store)->orWhere('department', 'like', "%$keyword%")->whereIn('id', $store)->get();
+                        $mydocs=Provider::whereIn('id', $store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->whereIn('id', $store)->orWhere('phone_no', 'like', "%$keyword%")->whereIn('id', $store)->orWhere('department', 'like', "%$keyword%")->whereIn('id', $store)->orWhere('specialization ', 'like', "%$keyword%")->whereIn('id', $store)->get();
                    }
                         return response()->json([
                         'status'=>'1',
