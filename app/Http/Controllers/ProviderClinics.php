@@ -25,7 +25,7 @@ class ProviderClinics extends Controller
               ->get();
           }else{
          
-              $doctors=Provider::where(['provider_type'=>"1"])->whereNotIn('id',$store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('phone_no', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('department', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->>orWhere('specialization', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->get();
+              $doctors=Provider::where(['provider_type'=>"1"])->whereNotIn('id',$store)->where('name', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('phone_no', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('department', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->orWhere('specialization', 'like', "%$keyword%")->where(['provider_type'=>"1"])->whereNotIn('id',$store)->get();
              // var_dump($doctors);
           }
 
