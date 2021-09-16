@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "HelloMedikal",
-		"_postman_id": "d6cfbee7-f184-b933-6f2f-54b783d88017",
+		"_postman_id": "6482e3b3-9e54-556b-6c10-3387a98352f7",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -556,7 +556,10 @@
 				"url": "http://motorkart.com.au/laravel6/api/getCountries",
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -592,7 +595,10 @@
 				"url": "http://motorkart.com.au/laravel6/api/getStates",
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -628,7 +634,10 @@
 				"url": "http://motorkart.com.au/laravel6/api/getCities",
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -636,7 +645,7 @@
 		{
 			"name": "bookAppointment",
 			"request": {
-				"url": "http://localhost/provider_apis/public/api/bookAppointment",
+				"url": "http://65.0.124.101/provider_apis/public/api/bookAppointment",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -711,7 +720,7 @@
 		{
 			"name": "reorderandCancel",
 			"request": {
-				"url": "http://localhost/provider_apis/public/api/reorderandCancel",
+				"url": "http://65.0.124.101/provider_apis/public/api/reorderandCancel",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -756,7 +765,7 @@
 		{
 			"name": "addReview",
 			"request": {
-				"url": "http://localhost/provider_apis/public/api/addReview",
+				"url": "http://65.0.124.101/provider_apis/public/api/addReview",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -795,7 +804,7 @@
 		{
 			"name": "appointHistoryandUpcomming",
 			"request": {
-				"url": "http://localhost/provider_apis/public/api/appointHistoryandUpcomming",
+				"url": "http://65.0.124.101/provider_apis/public/api/appointHistoryandUpcomming",
 				"method": "POST",
 				"header": [],
 				"body": {
