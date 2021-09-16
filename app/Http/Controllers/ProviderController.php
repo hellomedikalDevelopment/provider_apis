@@ -430,7 +430,7 @@ class ProviderController extends Controller
             {
                 return response()->json([ 'status' => '0','message' => "Sorry, Old password not match."]);          
             }      
-            DB::table('providers')->where('id',$user_data->id)->update(['password'=>Hash::make($new_pass)]);           
+            DB::table('providers')->where('id',$user_data->id)->update(['password'=>Hash::make($new_pass)]);
             $msg = [ 'status' => '1','message' => "Password reset successfully."];     
             return response()->json($msg);
         }

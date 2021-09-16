@@ -95,6 +95,11 @@ Route::post('/getStates', [ApiController::class, 'getStates']);
 Route::post('/addCity', [ApiController::class, 'addCity']);
 Route::post('/getCities', [ApiController::class, 'getCities']);
 
+Route::post('/bookAppointment', [ApiController::class, 'bookAppointment']);
+Route::post('/appointHistoryandUpcomming', [ApiController::class, 'appointHistoryandUpcomming']);
+Route::post('/reorderandCancel', [ApiController::class, 'reorderandCancel']);
+Route::post('/addReview', [ApiController::class, 'addReview']);
+
 /*User end*/
 
 /*
