@@ -12,6 +12,10 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
 use App\Models\customerSupport;
+use App\Models\Review;
+use App\Models\Slots;
+use App\Models\Appointment;
+use App\Models\Timeslot;
 
 
 use Validator;
@@ -23,6 +27,9 @@ class ApiController extends Controller
 { 
     
     protected $database;
+    public $unauthorised = 401;
+    public $successStatus = 200;
+    public $badrequest = 400;
 
 
 /**************************************************************************/
@@ -1059,8 +1066,8 @@ public function bookAppointment(Request $request){
                     $data['note'] = $request->note?$request->note:'';
                     $appointment_id = Appointment::insertGetId($data);
                     if ($appointment_id) {
-                        $slotdata['start_time'] = $request->start_time;
-                        $slotdata['end_time'] = $request->end_time;
+                        $slotdata['start_time'] = $request->time;
+                        // $slotdata['end_time'] = $request->end_time;
                         $slotdata['date'] = $request->date;
                         $slotdata['entity_id'] = $request->entity_id;
                         $slotdata['user_id'] = $request->user_id;
@@ -1080,86 +1087,86 @@ public function bookAppointment(Request $request){
         }
     }
 
-    // public function appointHistoryandUpcomming(Request $request){
-    //     $validator = Validator::make($request->all(), [
-    //         'user_id' => 'required',
-    //         'appointment_type' => 'required', //appointment_type 1 for history and 2 for cancelled appointments
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
-    //     }else{
-    //         $checkUser = User::where('id',$request->user_id)->first();
-    //         if ($checkUser) {
-    //             if ($request->appointment_type == 1) {
-    //                 $getAppointments = Appointment::where('user_id',$request->user_id)
-    //                 ->where('status','2')
-    //                 ->orderBy('id','DESC')
-    //                 ->get();
-    //                 $histArr = [];
-    //                 foreach ($getAppointments as $appointment) {
-    //                     $getsubcatDetails = DB::table('subcat_store')
-    //                     ->where('id',$appointment['store_id'])
-    //                     ->select('logo','name','subcat_id','address','status','rating')
-    //                     ->first();
-    //                     $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-    //                     $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-    //                     $serviceLogo = $subcatDetail['logo'];
-    //                     $logo = url('/').'/public/images/icon/'.$serviceLogo;
-    //                     $list['id'] = (String)$appointment['id'];
-    //                     $list['appointment_type'] = $subcat_name['sub_cat_name'];
-    //                     $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
-    //                     $list['auther_id'] = $appointment['store_id'];
-    //                     $list['logo'] = $logo;
-    //                     $list['location'] = $subcatDetail['address'];
-    //                     $list['name'] = $subcatDetail['name'];
-    //                     $list['status'] = $appointment['status'];
-    //                     $list['rating'] = $subcatDetail['rating'];
-    //                     $histArr[] = $list;
-    //                 }
-    //                 return response()->json([
-    //                     'status'=>'true',
-    //                     'message'=>'data fetched successfully',
-    //                     'data'=>$histArr
-    //                 ], $this->successStatus);
-    //             }elseif ($request->appointment_type == 2) {
-    //                 $getAppointments = Appointment::where('user_id',$request->user_id)
-    //                 ->where('status','3')
-    //                 ->orderBy('id','DESC')
-    //                 ->get();
-    //                 $cancelledArr = [];
-    //                 foreach ($getAppointments as $appointment) {
-    //                     $getsubcatDetails = DB::table('subcat_store')
-    //                     ->where('id',$appointment['store_id'])
-    //                     ->select('logo','name','subcat_id','address','status','rating')
-    //                     ->first();
-    //                     $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-    //                     $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-    //                     $serviceLogo = $subcatDetail['logo'];
-    //                     $logo = url('/').'/public/images/icon/'.$serviceLogo;
-    //                     $list['id'] = (String)$appointment['id'];
-    //                     $list['appointment_type'] = $subcat_name['sub_cat_name'];
-    //                     $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
-    //                     $list['auther_id'] = $appointment['store_id'];
-    //                     $list['logo'] = $logo;
-    //                     $list['location'] = $subcatDetail['address'];
-    //                     $list['name'] = $subcatDetail['name'];
-    //                     $list['status'] = $appointment['status'];
-    //                     $list['rating'] = $subcatDetail['rating'];
-    //                     $cancelledArr[] = $list;
-    //                 }
-    //                 return response()->json([
-    //                     'status'=>'true',
-    //                     'message'=>'data fetched successfully',
-    //                     'data'=>$cancelledArr
-    //                 ], $this->successStatus);
-    //             }else{
-    //                 return response()->json(['status'=>'false','message'=>'Invalid inputs'], $this->badrequest);
-    //             }
-    //         }else{
-    //             return response()->json(['status'=>'false','message'=>'User not found'], $this->badrequest);
-    //         }
-    //     }
-    // }
+    public function appointHistoryandUpcomming(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'appointment_type' => 'required', //appointment_type 1 for history and 2 for cancelled appointments
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
+        }else{
+            $checkUser = User::where('id',$request->user_id)->first();
+            if ($checkUser) {
+                if ($request->appointment_type == 1) {
+                    $getAppointments = Appointment::where('user_id',$request->user_id)
+                    ->where('status','2')
+                    ->orderBy('id','DESC')
+                    ->get();
+                    $histArr = [];
+                    foreach ($getAppointments as $appointment) {
+                        // $getsubcatDetails = DB::table('subcat_store')
+                        // ->where('id',$appointment['store_id'])
+                        // ->select('logo','name','subcat_id','address','status','rating')
+                        // ->first();
+                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
+                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
+                        // $serviceLogo = $subcatDetail['logo'];
+                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
+                        $list['id'] = (String)$appointment['id'];
+                        // $list['appointment_type'] = $subcat_name['sub_cat_name'];
+                        $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
+                        // $list['auther_id'] = $appointment['store_id'];
+                        // $list['logo'] = $logo;
+                        // $list['location'] = $subcatDetail['address'];
+                        // $list['name'] = $subcatDetail['name'];
+                        // $list['status'] = $appointment['status'];
+                        // $list['rating'] = $subcatDetail['rating'];
+                        $histArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$histArr
+                    ], $this->successStatus);
+                }elseif ($request->appointment_type == 2) {
+                    $getAppointments = Appointment::where('user_id',$request->user_id)
+                    ->where('status','3')
+                    ->orderBy('id','DESC')
+                    ->get();
+                    $cancelledArr = [];
+                    foreach ($getAppointments as $appointment) {
+                        // $getsubcatDetails = DB::table('subcat_store')
+                        // ->where('id',$appointment['store_id'])
+                        // ->select('logo','name','subcat_id','address','status','rating')
+                        // ->first();
+                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
+                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
+                        // $serviceLogo = $subcatDetail['logo'];
+                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
+                        $list['id'] = (String)$appointment['id'];
+                        // $list['appointment_type'] = $subcat_name['sub_cat_name'];
+                        $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
+                        // $list['auther_id'] = $appointment['store_id'];
+                        // $list['logo'] = $logo;
+                        // $list['location'] = $subcatDetail['address'];
+                        // $list['name'] = $subcatDetail['name'];
+                        $list['status'] = $appointment['status'];
+                        // $list['rating'] = $subcatDetail['rating'];
+                        $cancelledArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$cancelledArr
+                    ], $this->successStatus);
+                }else{
+                    return response()->json(['status'=>'false','message'=>'Invalid inputs'], $this->badrequest);
+                }
+            }else{
+                return response()->json(['status'=>'false','message'=>'User not found'], $this->badrequest);
+            }
+        }
+    }
 
     public function reorderandCancel(Request $request){
         $validator = Validator::make($request->all(), [
@@ -1174,11 +1181,10 @@ public function bookAppointment(Request $request){
             if($userExist){
                 if ($request->type == 0) { //cancel
                     $getOrder = Appointment::where('id',$request->appointment_id)
-                    // ->where('order_status',1)
                     ->first();
                     if ($getOrder) {
                         $updateStatus = Appointment::where('id',$request->appointment_id)
-                        ->update(['appointment_status' => '2']);
+                        ->update(['status' => '3']);
                         return response()->json([
                             'status'=>'true',
                             'message'=>'Appointment Cancelled Successfully',
@@ -1193,37 +1199,38 @@ public function bookAppointment(Request $request){
                     $getOrder = Appointment::where('id',$request->appointment_id)
                     ->first();
                     if ($getOrder) {
-                        $checkSlot = Slots::where('entity_id',$request->entity_id)
-                ->where('start_time',$request->start_time)
-                ->where('end_time',$request->end_time)
+                        $checkSlot = Slots::where('entity_id',$getOrder->entity_id)
+                ->where('start_time',$request->time)
+                // ->where('end_time',$request->end_time)
                 ->where('date',$request->date)
                 ->where('user_id',$request->user_id)
                 ->where('status','1')
                 // ->orWhere('status','3')
                 ->first();
+                // print_r($checkSlot);die();
                 if ($checkSlot) {
                     return response()->json(['status'=>'true','message'=>'Slot Already Booked'], $this->badrequest);
                 }else{
                     $space = ' ';
-                    $data['user_id'] = $checkSlot->user_id;
-                    $data['entity_id'] = $checkSlot->entity_id;
-                    $data['payment_amount'] = $checkSlot->payment;
-                    $data['tax'] = $checkSlot->tax;
-                    $data['total'] = $checkSlot->total;
+                    $data['user_id'] = $getOrder->user_id;
+                    $data['entity_id'] = $getOrder->entity_id;
+                    $data['payment_amount'] = $getOrder->payment_amount;
+                    $data['tax'] = $getOrder->tax;
+                    $data['total'] = $getOrder->total;
                     $data['payment_status'] = 1;
-                    $data['has_qurantine'] = $checkSlot->has_qurantine;
-                    $data['is_new_customer'] = $checkSlot->is_new_customer;
-                    $data['date'] = $checkSlot->date;
-                    $data['datetime'] = $checkSlot->date.$space.$checkSlot->start_time;
-                    $data['phone_number'] = $checkSlot->phone_number;
-                    $data['note'] = $checkSlot->note?$checkSlot->note:'';
+                    $data['has_qurantine'] = $getOrder->has_qurantine;
+                    $data['is_new_customer'] = $getOrder->is_new_customer;
+                    $data['date'] = $getOrder->date;
+                    $data['datetime'] = $getOrder->date.$space.$getOrder->time;
+                    $data['phone_number'] = $getOrder->phone_number;
+                    $data['note'] = $getOrder->note?$getOrder->note:'';
                     $appointment_id = Appointment::insertGetId($data);
                     if ($appointment_id) {
-                        $slotdata['start_time'] = $checkSlot->start_time;
-                        $slotdata['end_time'] = $checkSlot->end_time;
-                        $slotdata['date'] = $checkSlot->date;
-                        $slotdata['entity_id'] = $checkSlot->entity_id;
-                        $slotdata['user_id'] = $checkSlot->user_id;
+                        $slotdata['start_time'] = $request->time;
+                        // $slotdata['end_time'] = $checkSlot->end_time;
+                        $slotdata['date'] = $request->date;
+                        $slotdata['entity_id'] = $getOrder->entity_id;
+                        $slotdata['user_id'] = $request->user_id;
                         $slotdata['appointment_id'] = $appointment_id;
                         $slotdata['status'] = 1;
                         $addSlot = Slots::insertGetId($slotdata);

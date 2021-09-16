@@ -1,0 +1,823 @@
+{
+	"variables": [],
+	"info": {
+		"name": "HelloMedikal",
+		"_postman_id": "d6cfbee7-f184-b933-6f2f-54b783d88017",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/register",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "Tarun",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Malhotra",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "taru244ddn252@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "phone_no",
+							"value": "8168245495455",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Female",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "India",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "Punjab",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mohali",
+							"type": "text"
+						},
+						{
+							"key": "zip",
+							"value": "160059",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/tarun/Desktop/CARS/12.jpg",
+							"value": ""
+						}
+					]
+				},
+				"description": "Register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/login",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun22@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234567",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/changePassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "cpassword",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password 2",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/changePassword2",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "old_password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "cpassword",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Resend Otp",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/resendOtp",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Otp",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/verifyOtp",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "80",
+							"type": "text"
+						},
+						{
+							"key": "otp",
+							"value": "3552",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/editProfile",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "Tarun",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Malhotra",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tarun6@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "phone_no",
+							"value": "8168295846",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Female",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "India",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "Punjab",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mohali",
+							"type": "text"
+						},
+						{
+							"key": "zip",
+							"value": "160059",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/tarun/Desktop/CARS/14.jpg",
+							"value": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Change Language",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/changeLanguage",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "language",
+							"value": "English",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Support",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/customerSupport",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Tarun Malhotra",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tarun1@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "phone_no",
+							"value": "8168295841",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "Testing",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "Hello Testing",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/tarun/Desktop/CARS/13.jpg",
+							"value": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete / Deactivate Account",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/deactivateAccount",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "81",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Profile",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/getProfile",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "75",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/forgotPassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun7@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password 2",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/forgotPassword2",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun7@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Resend Otp 2",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/resendOtp2",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun7@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Otp 2",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/verifyOtp2",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun7@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "otp",
+							"value": "8443",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password 3",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/changePassword3",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tarun7@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "cpassword",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Country",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/addCountry",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "India",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Countries",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/getCountries",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add State",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/addState",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "country_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Haryana",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get States",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/getStates",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add City",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/addCity",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "state_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Ambala",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cities",
+			"request": {
+				"url": "http://motorkart.com.au/laravel6/api/getCities",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "bookAppointment",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/bookAppointment",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "entity_id",
+							"value": "1",
+							"type": "text",
+							"description": "clinic or doctor ID"
+						},
+						{
+							"key": "user_id",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "date",
+							"value": "2021-09-16",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "time",
+							"value": "01:00",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "payment",
+							"value": "200",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "tax",
+							"value": "10",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "total",
+							"value": "210",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "is_new_customer",
+							"value": "1",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "has_qurantine",
+							"value": "1",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "phone_number",
+							"value": "7741258963",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "reorderandCancel",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/reorderandCancel",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "appointment_id",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text",
+							"description": "0 cancel 1 reorder"
+						},
+						{
+							"key": "date",
+							"value": "2021-09-18",
+							"description": "required in case of reorder",
+							"type": "text"
+						},
+						{
+							"key": "time",
+							"value": "01:00",
+							"description": "required in case of reorder",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "addReview",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/addReview",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text",
+							"description": "clinic or doctor id"
+						},
+						{
+							"key": "rating",
+							"value": "3",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "review",
+							"value": "dfddfdfd",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "appointHistoryandUpcomming",
+			"request": {
+				"url": "http://localhost/provider_apis/public/api/appointHistoryandUpcomming",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "appointment_type",
+							"value": "2",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
