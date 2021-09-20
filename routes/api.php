@@ -21,7 +21,7 @@ use App\Http\Controllers\ProviderClinics;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-  
+
 Route::post('/createAccount', [ProviderController::class, 'register']);
 Route::post('/loginProvider', [ProviderController::class, 'login']);
 Route::post('/Verification', [ProviderController::class, 'forgotPassword']);
@@ -39,7 +39,7 @@ Route::post('/customerSupport', [ProviderController::class, 'customerSupport']);
 Route::post('/deleteAccount', [ProviderController::class, 'deleteAccount']);
 Route::post('/deleteProviderImages', [ProviderController::class, 'deleteProviderImages']);
 Route::post('/deleteProviderProfileImages', [ProviderController::class, 'deleteProviderProfileImages']);
-Route::post('/setNewSchedule', [ProviderController::class, 'setNewSchedule']);  
+Route::post('/setNewSchedule', [ProviderController::class, 'setNewSchedule']);
 Route::post('/getNewSchedule', [ProviderController::class, 'getNewSchedule']);
 
 // clinic section
@@ -48,10 +48,10 @@ Route::post('/addDoctorInClinic', [ProviderClinics::class, 'addDoctorByClinic'])
 Route::get('/getClinicDoctors/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getClinicDoctors']);
 Route::Post('/setScheduleByClinic', [ProviderClinics::class, 'setScheduleByClinic']);
 Route::Post('/viewDoctorShedualForClinic', [ProviderClinics::class, 'viewDoctorShedualForClinic']);
-Route::Post('/addDoctorRequest', [ProviderClinics::class, 'addDoctorRequest']);       
+Route::Post('/addDoctorRequest', [ProviderClinics::class, 'addDoctorRequest']);
 Route::post('/serchProvider', [ProviderClinics::class, 'serchProvider']);
 Route::get('/getShedualedDoctors/{clinic_id}/{keyword?}', [ProviderClinics::class, 'getShedualedDoctors']);
-Route::Post('/deleteScheduleByClinic', [ProviderClinics::class, 'deleteScheduleByClinic']);   
+Route::Post('/deleteScheduleByClinic', [ProviderClinics::class, 'deleteScheduleByClinic']);
 
 
 
@@ -99,6 +99,8 @@ Route::post('/bookAppointment', [ApiController::class, 'bookAppointment']);
 Route::post('/appointHistoryandUpcomming', [ApiController::class, 'appointHistoryandUpcomming']);
 Route::post('/reorderandCancel', [ApiController::class, 'reorderandCancel']);
 Route::post('/addReview', [ApiController::class, 'addReview']);
+Route::post('/findDoctor', [ApiController::class, 'findDoctor']);
+Route::post('/findDoctor', [ApiController::class, 'findDoctor']);
 
 /*User end*/
 

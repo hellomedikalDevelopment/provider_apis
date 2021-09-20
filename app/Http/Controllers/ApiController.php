@@ -24,8 +24,8 @@ use Illuminate\Support\Facades\Hash;
 use DB;
 
 class ApiController extends Controller
-{ 
-    
+{
+
     protected $database;
     public $unauthorised = 401;
     public $successStatus = 200;
@@ -45,34 +45,34 @@ class ApiController extends Controller
 /**************************************************************************/
 
 
-    public function save(Request $request){ 
+    public function save(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
 
         $result = $this->database->getReference($table)->push($input);
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
 /**************************************************************************/
 
 
-    public function getAll(Request $request){ 
+    public function getAll(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
-        
+
         $result = $this->database->getReference($table)->getSnapshot()->getValue();
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
 /**************************************************************************/
 
-    public function getSingle(Request $request){ 
+    public function getSingle(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
@@ -80,13 +80,13 @@ class ApiController extends Controller
         $uid = $request->uid;
         $result = $this->database->getReference($table."/".$uid)->getValue();
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
 /**************************************************************************/
 
-    public function update(Request $request){ 
+    public function update(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
@@ -94,14 +94,14 @@ class ApiController extends Controller
         $uid = $request->uid;
         $result = $this->database->getReference($table."/".$uid)->update($input);
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
 
  /**************************************************************************/
 
-    public function delete(Request $request){ 
+    public function delete(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
@@ -109,13 +109,13 @@ class ApiController extends Controller
         $uid = $request->uid;
         $result = $this->database->getReference($table."/".$uid)->remove();
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
 /**************************************************************************/
 
-    public function upload(Request $request){ 
+    public function upload(Request $request){
 
         /*$storage = (new Factory())
         ->withServiceAccount(__DIR__.'/tryproject-2ac32-firebase-adminsdk-8e8q5-f520676e3c.json')
@@ -140,14 +140,14 @@ class ApiController extends Controller
 
 /**************************************************************************/
 
-    public function getSubscriptions(Request $request){ 
+    public function getSubscriptions(Request $request){
 
         $input = $request->all();
         $table = $request->table_name;
 
         //$data = $this->database->getReference('items')->getValue();
         //$table = 'items/';
-        
+
         $result = $this->database->getReference($table)
         //->orderByChild('title')->equalTo('2')
         //->orderByChild('title')
@@ -165,8 +165,8 @@ class ApiController extends Controller
             'body' => 'This should probably bes longer8.'
         );
 
-        //$data1 = $this->database->getReference($table."/".$uid)->update($data); 
-         
+        //$data1 = $this->database->getReference($table."/".$uid)->update($data);
+
         $this->database->getReference($table)->push($input);
 
         // Delete Data
@@ -178,7 +178,7 @@ class ApiController extends Controller
         // Update Data
         //$reference = $database->getReference($table."/".$uid)->update($data);
 
-        return response()->json(['status' => 1,'result' => $result]); 
+        return response()->json(['status' => 1,'result' => $result]);
 
     }
 
@@ -187,7 +187,7 @@ class ApiController extends Controller
 /**************************************************************************/
 
 
-    public function register(Request $request){ 
+    public function register(Request $request){
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
@@ -200,28 +200,28 @@ class ApiController extends Controller
             'state' => 'required',
             'city' => 'required',
             'zip' => 'required',
-            'password' => 'required', 
-            //'device_type' => 'required', 
-            //'device_id' => 'required', 
+            'password' => 'required',
+            //'device_type' => 'required',
+            //'device_id' => 'required',
         ]);
 
-        if ($validator->fails()) { 
-            return response()->json(['status' => 0,'message'=>"All fields are required"]); 
+        if ($validator->fails()) {
+            return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $checkEmail = User::where(['email'=>$request->email])->first();
-        
+
         if($checkEmail){
-             return response()->json(['status' => 0,'message'=>'Email already exist.']); 
+             return response()->json(['status' => 0,'message'=>'Email already exist.']);
         }
-        
+
         $checkPhone = User::where(['phone_no'=>$request->phone_no])->first();
-        
+
         if($checkPhone){
-             return response()->json(['status' => 0,'message'=>'Phone No already exist.']); 
+             return response()->json(['status' => 0,'message'=>'Phone No already exist.']);
         }
-        
-        
+
+
         if ($request->hasFile('image')) {
 
             if ($request->file('image')->isValid()) {
@@ -235,9 +235,9 @@ class ApiController extends Controller
                 //$extension = $request->image->extension();
                 //$image_name = time().".".$extension;
                 //$request->image->storeAs('/images', $image_name);
-                
-                  $image_name = time().'.'.$request->image->extension();  
-     
+
+                  $image_name = time().'.'.$request->image->extension();
+
                 $request->image->move(public_path('images'), $image_name);
 
             }else{
@@ -247,10 +247,10 @@ class ApiController extends Controller
         }else{
             $image_name ="default.png";
         }
-        
+
 
         $data = array(
-            
+
             'first_name'=>$request->first_name,
             'last_name'=>$request->last_name,
             'email'=>$request->email,
@@ -268,34 +268,34 @@ class ApiController extends Controller
             'otp'=> rand(1111,9999),
             'is_admin'=>1,
             'is_active'=>1,
-            
+
             );
-        
+
 
         $users = User::create($data);
         $url = url('public/images');
         $user = User::where(['id'=>$users->id])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
-        
-        $data['id'] =  $users->id;
-        
 
-        return response()->json(['status' => 1,'message' => 'Registered Successfully.','result' =>$user]); 
+        $data['id'] =  $users->id;
+
+
+        return response()->json(['status' => 1,'message' => 'Registered Successfully.','result' =>$user]);
 
     }
 
 /**************************************************************************/
 
-    public function login(Request $request){ 
+    public function login(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'email' => 'required', 
-            'password' => 'required', 
-            //'device_type' => 'required', 
-            //'device_id' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+            //'device_type' => 'required',
+            //'device_id' => 'required',
         ]);
 
-        if ($validator->fails()) { 
-            return response()->json(['status' => 0,'message'=>"All fields are required"]); 
+        if ($validator->fails()) {
+            return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
         $url = url('public/images');
         $checkEmail = User::where(['email'=>$request->email,'is_active'=>1])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
@@ -305,130 +305,130 @@ class ApiController extends Controller
             {
                 $activateAccount = User::where(['email'=>$request->email])
                 ->update(['is_active'=>'1']);
-                return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $update]); 
+                return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $update]);
             }else{
-                return response()->json(['status' => 0,'message'=>'Password Mismatched']);   
+                return response()->json(['status' => 0,'message'=>'Password Mismatched']);
             }
         }
         if($checkEmail){
-        
+
             if (Hash::check($request->password, $checkEmail->password))
             {
-                return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $checkEmail]); 
+                return response()->json(['status' => 1,'message' => 'Login Successfully.','result' => $checkEmail]);
             }else{
-                return response()->json(['status' => 0,'message'=>'Password Mismatched']);   
+                return response()->json(['status' => 0,'message'=>'Password Mismatched']);
             }
         }else{
-            return response()->json(['status' => 0,'message'=>'Account Not Registered or Deactivated Please contact support for more information.']);  
+            return response()->json(['status' => 0,'message'=>'Account Not Registered or Deactivated Please contact support for more information.']);
         }
-        
+
 
     }
 
 /**************************************************************************/
 
 
-    public function changePassword(Request $request){ 
+    public function changePassword(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
-            'password' => 'required', 
-            'cpassword' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'password' => 'required',
+            'cpassword' => 'required',
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
+
         if ($request->password  != $request->cpassword)
         {
-            return response()->json(['status' => 0,'message'=>'Password Mismatch']);   
+            return response()->json(['status' => 0,'message'=>'Password Mismatch']);
         }
-        
+
         User::where('id', $request->user_id)->update([
            'password' => Hash::make($request->password),
            'orignal_password' => $request->password,
         ]);
-        
-        return response()->json(['status' => 1,'message' => 'Changed Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Changed Successfully.']);
+
 
     }
-    
-    
+
+
 /**************************************************************************/
 
 
-    public function resendOtp(Request $request){ 
+    public function resendOtp(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
-       
+
+
         $otp  = rand(1111,9999);
-        
+
         User::where('id', $request->user_id)->update([
            'otp' => $otp
         ]);
-        
+
        $result = ['otp'=>$otp];
-        
-        return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result' => $result]); 
-        
+
+        return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result' => $result]);
+
 
     }
-    
-    
+
+
 /**************************************************************************/
 
 
-    public function verifyOtp(Request $request){ 
+    public function verifyOtp(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
-            'otp' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'otp' => 'required',
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id,'otp'=>$request->otp])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid OTP']);   
+            return response()->json(['status' => 0,'message'=>'Invalid OTP']);
         }
-        
+
         User::where('id', $request->user_id)->update([
            'is_active' => 2
         ]);
-        
-        return response()->json(['status' => 1,'message' => 'Verified Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Verified Successfully.']);
+
     }
 
 /**************************************************************************/
 
-    public function editProfile(Request $request){ 
+    public function editProfile(Request $request){
 
          $validator = Validator::make($request->all(), [
             'user_id' => 'required',
@@ -442,20 +442,20 @@ class ApiController extends Controller
             'state' => 'required',
             'city' => 'required',
             'zip' => 'required',
-            //'device_type' => 'required', 
-            //'device_id' => 'required', 
+            //'device_type' => 'required',
+            //'device_id' => 'required',
         ]);
 
-        if ($validator->fails()) { 
-            return response()->json(['status' => 0,'message'=>"All fields are required"]); 
+        if ($validator->fails()) {
+            return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
+
         if ($request->hasFile('image')) {
 
             if ($request->file('image')->isValid()) {
@@ -470,8 +470,8 @@ class ApiController extends Controller
                 //$image_name = time().".".$extension;
                 //$request->image->storeAs('/images', $image_name);
 
-                $image_name = time().'.'.$request->image->extension();  
-     
+                $image_name = time().'.'.$request->image->extension();
+
                 $request->image->move(public_path('images'), $image_name);
 
             }else{
@@ -481,10 +481,10 @@ class ApiController extends Controller
         }else{
             $image_name = $user->image;
         }
-        
-        
+
+
         $data = array(
-            
+
             'first_name'=>$request->first_name,
             'last_name'=>$request->last_name,
             'email'=>$request->email,
@@ -502,97 +502,97 @@ class ApiController extends Controller
             //'otp'=> rand(1111,9999),
             //'is_admin'=>1,
             //'is_active'=>1,
-            
+
         );
-        
+
          User::where('id', $request->user_id)->update($data);
-        
-        return response()->json(['status' => 1,'message' => 'Updated Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Updated Successfully.']);
+
     }
 
 /**************************************************************************/
 
 
-    public function changePassword2(Request $request){ 
+    public function changePassword2(Request $request){
 
-       $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
+       $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
             'old_password' => 'required',
-            'password' => 'required', 
-            'cpassword' => 'required', 
+            'password' => 'required',
+            'cpassword' => 'required',
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
+
         if ($request->password  != $request->cpassword)
         {
-            return response()->json(['status' => 0,'message'=>'Password Mismatch']);   
+            return response()->json(['status' => 0,'message'=>'Password Mismatch']);
         }
-        
+
         if (Hash::check($request->old_password, $user->password))
         {
             User::where('id', $request->user_id)->update([
                'password' => Hash::make($request->password),
                'orignal_password' => $request->password,
             ]);
-        
-            return response()->json(['status' => 1,'message' => 'Changed Successfully.']); 
-        
-           
+
+            return response()->json(['status' => 1,'message' => 'Changed Successfully.']);
+
+
         }else{
-             return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
+             return response()->json(['status' => 0,'message'=>'Invalid Old Password']);
         }
-        
-        
-        
-        
+
+
+
+
     }
 
 /**************************************************************************/
 
 
-    public function changeLanguage(Request $request){ 
+    public function changeLanguage(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
-            'language' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'language' => 'required',
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
+
         User::where('id', $request->user_id)->update([
            'language' => $request->language
         ]);
-        
-        return response()->json(['status' => 1,'message' => 'Changed Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Changed Successfully.']);
+
     }
 
 /**************************************************************************/
 
-    public function customerSupport(Request $request){ 
+    public function customerSupport(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
             'name' => 'required',
             'email' => 'required',
             'phone_no' => 'required',
@@ -602,10 +602,10 @@ class ApiController extends Controller
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         if ($request->hasFile('image')) {
 
             if ($request->file('image')->isValid()) {
@@ -616,14 +616,14 @@ class ApiController extends Controller
 
                 ]);*/
 
-                
+
                 //$extension = $request->image->extension();
                 //$image_name = time().".".$extension;
                 //print_R($image_name);die;
                 //$request->image->storeAs('/images', $image_name);
                 //$request['image1'] = $image_name;
 
-                $image_name = time().'.'.$request->image->extension();  
+                $image_name = time().'.'.$request->image->extension();
                 $request->image->move(public_path('images'), $image_name);
 
             }else{
@@ -633,180 +633,180 @@ class ApiController extends Controller
         }else{
             $request['image1'] = "default.png";
         }
-        
+
 
         customerSupport::create($request->all());
-        
-        return response()->json(['status' => 1,'message' => 'Added Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Added Successfully.']);
+
     }
 
 /**************************************************************************/
 
     public function deactivateAccount(Request $request){
-        $validator = Validator::make($request->all(), [ 
-            'user_id' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
             'password' => 'required',
             'type' => 'required'
         ]);
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
                 return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }else{
             $user = User::where(['id'=>$request->user_id])->first();
-                
+
             if(!$user){
-                return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+                return response()->json(['status' => 0,'message'=>'Invalid user id']);
             }
 
             if ($request->type === '1') {
                 if (Hash::check($request->password, $user->password))
                     {
                         User::where('id', $request->user_id)->delete();
-                    
-                        return response()->json(['status' => 1,'message' => 'Deleted Successfully.']); 
-                       
+
+                        return response()->json(['status' => 1,'message' => 'Deleted Successfully.']);
+
                     }else{
-                         return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
+                         return response()->json(['status' => 0,'message'=>'Invalid Old Password']);
                     }
             }elseif ($request->type === '2'){
                 if (Hash::check($request->password, $user->password))
                 {
                     User::where('id', $request->user_id)->update(['is_active'=>'2']);
-                
-                    return response()->json(['status' => 1,'message' => 'Deactivated Successfully.']); 
-                   
+
+                    return response()->json(['status' => 1,'message' => 'Deactivated Successfully.']);
+
                 }else{
-                     return response()->json(['status' => 0,'message'=>'Invalid Old Password']);   
+                     return response()->json(['status' => 0,'message'=>'Invalid Old Password']);
                 }
             }
         }
-      
+
     }
 
 /**************************************************************************/
 
-    public function getProfile(Request $request){ 
+    public function getProfile(Request $request){
 
          $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            //'device_type' => 'required', 
-            //'device_id' => 'required', 
+            //'device_type' => 'required',
+            //'device_id' => 'required',
         ]);
 
-        if ($validator->fails()) { 
-            return response()->json(['status' => 0,'message'=>"All fields are required"]); 
+        if ($validator->fails()) {
+            return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
-        
+
+
         $url = url('/images');
 
         $user = User::where(['id'=>$request->user_id])->select(array('*', DB::raw("CONCAT('$url/', image) AS image")))->first();
-         
+
         //$user = User::where(['id'=>$request->user_id])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid user id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid user id']);
         }
-        
-        return response()->json(['status' => 1,'message' => 'Success','result'=>$user]); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Success','result'=>$user]);
+
     }
 
 /**************************************************************************/
 
-    public function forgotPassword(Request $request){ 
+    public function forgotPassword(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'email' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['email'=>$request->email])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid email id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid email id']);
         }
-        
+
         $password = rand(111111,999999);
-        
+
         User::where('email', $request->email)->update([
            'password' => Hash::make($password),
            'orignal_password' => $password,
         ]);
-        
+
         $result = ['password'=>$password];
-        
-        return response()->json(['status' => 1,'message' => 'Changed Successfully.','result'=>$result]); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Changed Successfully.','result'=>$result]);
+
 
     }
-    
-    
+
+
 /**************************************************************************/
 
-public function forgotPassword2(Request $request){ 
+public function forgotPassword2(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
-        'email' => 'required', 
+    $validator = Validator::make($request->all(), [
+        'email' => 'required',
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
+
     $user = User::where(['email'=>$request->email])->first();
-    
+
     if(!$user){
-        return response()->json(['status' => 0,'message'=>'Invalid email id']);   
+        return response()->json(['status' => 0,'message'=>'Invalid email id']);
     }
-    
+
     $otp = rand(1111,9999);
-    
+
     User::where('email', $request->email)->update([
        'otp' => $otp,
     ]);
-    
+
     $result = ['otp'=>$otp];
-    
-    return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result'=>$result]); 
-    
+
+    return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result'=>$result]);
+
 
 }
 
 
 /**************************************************************************/
 
-public function resendOtp2(Request $request){ 
+public function resendOtp2(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
-        'email' => 'required', 
+    $validator = Validator::make($request->all(), [
+        'email' => 'required',
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
-    $user = User::where(['email'=>$request->email])->first();
-    
-    if(!$user){
-        return response()->json(['status' => 0,'message'=>'Invalid email id']);   
-    }
-    
 
-    
+    $user = User::where(['email'=>$request->email])->first();
+
+    if(!$user){
+        return response()->json(['status' => 0,'message'=>'Invalid email id']);
+    }
+
+
+
     $otp  = rand(1111,9999);
-    
+
     User::where('email', $request->email)->update([
        'otp' => $otp
     ]);
-    
+
    $result = ['otp'=>$otp];
-    
-    return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result' => $result]); 
-    
+
+    return response()->json(['status' => 1,'message' => 'OTP sent to your email.','result' => $result]);
+
 
 }
 
@@ -814,189 +814,189 @@ public function resendOtp2(Request $request){
 /**************************************************************************/
 
 
-public function verifyOtp2(Request $request){ 
+public function verifyOtp2(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
-        'email' => 'required', 
-        'otp' => 'required', 
+    $validator = Validator::make($request->all(), [
+        'email' => 'required',
+        'otp' => 'required',
 
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
+
     $user = User::where(['email'=>$request->email,'otp'=>$request->otp])->first();
-    
+
     if(!$user){
-        return response()->json(['status' => 0,'message'=>'Invalid OTP']);   
+        return response()->json(['status' => 0,'message'=>'Invalid OTP']);
     }
-    
+
     User::where('email', $request->email)->update([
        'is_active' => 2
     ]);
-    
-    return response()->json(['status' => 1,'message' => 'Verified Successfully.']); 
-    
+
+    return response()->json(['status' => 1,'message' => 'Verified Successfully.']);
+
 }
 
 /**************************************************************************/
 
 
-    public function changePassword3(Request $request){ 
+    public function changePassword3(Request $request){
 
-        $validator = Validator::make($request->all(), [ 
-            'email' => 'required', 
-            'password' => 'required', 
-            'cpassword' => 'required', 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+            'cpassword' => 'required',
 
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['status' => 0,'message'=>"All fields are required"]);
         }
-        
+
         $user = User::where(['email'=>$request->email])->first();
-        
+
         if(!$user){
-            return response()->json(['status' => 0,'message'=>'Invalid email id']);   
+            return response()->json(['status' => 0,'message'=>'Invalid email id']);
         }
-        
+
         if ($request->password  != $request->cpassword)
         {
-            return response()->json(['status' => 0,'message'=>'Password Mismatch']);   
+            return response()->json(['status' => 0,'message'=>'Password Mismatch']);
         }
-        
+
         User::where('email', $request->email)->update([
            'password' => Hash::make($request->password),
            'orignal_password' => $request->password,
         ]);
-        
-        return response()->json(['status' => 1,'message' => 'Changed Successfully.']); 
-        
+
+        return response()->json(['status' => 1,'message' => 'Changed Successfully.']);
+
 
     }
-    
+
 /**************************************************************************/
 
 
-public function addCountry(Request $request){ 
+public function addCountry(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
-        'name' => 'required',  
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
+
     $country = Country::where(['name'=>$request->name])->first();
-    
+
     if($country){
-        return response()->json(['status' => 0,'message'=>'Country Already Added']);   
+        return response()->json(['status' => 0,'message'=>'Country Already Added']);
     }
-    
-    $data = array(     
+
+    $data = array(
         'name'=>$request->name,
     );
-    
+
 
     $country = Country::create($data);
-    
-    return response()->json(['status' => 1,'message' => 'Added Successfully.']); 
-    
+
+    return response()->json(['status' => 1,'message' => 'Added Successfully.']);
+
 }
 
 /**************************************************************************/
-    
 
-public function getCountries(Request $request){ 
+
+public function getCountries(Request $request){
 
    $countries = Country::all();
-   return response()->json(['status' => 1,'message' => 'Success','result'=>$countries]); 
-   
+   return response()->json(['status' => 1,'message' => 'Success','result'=>$countries]);
+
 }
 
 /**************************************************************************/
 
-public function addState(Request $request){ 
+public function addState(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
-        'country_id' => 'required', 
-        'name' => 'required',  
+    $validator = Validator::make($request->all(), [
+        'country_id' => 'required',
+        'name' => 'required',
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
+
     $state = State::where(['country_id'=>$request->country_id,'name'=>$request->name])->first();
-    
+
     if($state){
-        return response()->json(['status' => 0,'message'=>'State Already Added']);   
+        return response()->json(['status' => 0,'message'=>'State Already Added']);
     }
-    
-    $data = array(     
+
+    $data = array(
         'country_id'=>$request->country_id,
         'name'=>$request->name,
     );
-    
+
 
     $state = State::create($data);
-    
-    return response()->json(['status' => 1,'message' => 'Added Successfully.']); 
-    
+
+    return response()->json(['status' => 1,'message' => 'Added Successfully.']);
+
 }
 
 /**************************************************************************/
-    
 
-public function getStates(Request $request){ 
+
+public function getStates(Request $request){
 
    $states = State::all();
-   return response()->json(['status' => 1,'message' => 'Success','result'=>$states]); 
-   
+   return response()->json(['status' => 1,'message' => 'Success','result'=>$states]);
+
 }
 
 /**************************************************************************/
 
-public function addCity(Request $request){ 
+public function addCity(Request $request){
 
-    $validator = Validator::make($request->all(), [ 
+    $validator = Validator::make($request->all(), [
         'state_id' => 'required',
-        'name' => 'required',  
+        'name' => 'required',
     ]);
 
-    if ($validator->fails()) { 
+    if ($validator->fails()) {
         return response()->json(['status' => 0,'message'=>"All fields are required"]);
     }
-    
+
     $city = City::where(['state_id'=>$request->state_id,'name'=>$request->name])->first();
-    
+
     if($city){
-        return response()->json(['status' => 0,'message'=>'City Already Added']);   
+        return response()->json(['status' => 0,'message'=>'City Already Added']);
     }
-    
-    $data = array(     
+
+    $data = array(
         'state_id'=>$request->state_id,
         'name'=>$request->name,
     );
-    
+
 
     $city = City::create($data);
-    
-    return response()->json(['status' => 1,'message' => 'Added Successfully.']); 
-    
+
+    return response()->json(['status' => 1,'message' => 'Added Successfully.']);
+
 }
 
 /**************************************************************************/
-    
 
-public function getCities(Request $request){ 
+
+public function getCities(Request $request){
 
    $cities = City::all();
-   return response()->json(['status' => 1,'message' => 'Success','result'=>$cities]); 
-   
+   return response()->json(['status' => 1,'message' => 'Success','result'=>$cities]);
+
 }
 
 /**************************************************************************/
@@ -1085,6 +1085,213 @@ public function bookAppointment(Request $request){
                 return response()->json(['status'=>'false','message'=>'User not found'], $this->badrequest);
             }
         }
+    }
+
+    public function findDoctor(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'type' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'specility' => 'required',
+            'insurance' => 'required',
+            'availablity' => 'required',
+            // 'gender' => 'required', //advance filter
+            // 'availablity_type' => 'required', //advance filter
+            // 'language' => 'required', //advance filter
+            // 'availablity_time' => 'required', //advance filter
+            // 'with_profile_images' => 'required', //advance filter
+            // 'avg_rating' => 'required', //advance filter
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
+        }else{
+            $userExist = User::where('id', $request->user_id)->first();
+            if($userExist){
+                if ($request->type == '1') {
+                    $q = Provider::query();
+                    if ($request->country)
+                    {
+                        $q->where('name','like',$request->country);
+                    }
+
+                    if ($request->city)
+                    {
+                        $q->where('city','like',$request->city);
+                    }
+
+                    if ($request->specility)
+                    {
+                        $q->where('specility','like',$request->specility);
+                    }
+
+                    if ($request->insurance)
+                    {
+                        $q->where('insurance','like',$request->insurance);
+                    }
+
+                    if ($request->country)
+                    {
+                        $q->where('name','like',$request->country);
+                    }
+
+                    if ($request->gender)
+                    {
+                        $q->where('gender','like',$request->gender);
+                    }
+
+                    if ($request->availablity_type)
+                    {
+                        // $q->
+                    }
+
+                    if ($request->availablity_time)
+                    {
+                        $q->where('availablity_time','like',$request->availablity_time);
+                    }
+
+                    if ($request->with_profile_images)
+                    {
+                        $q->where('with_profile_images','like',$request->with_profile_images);
+                    }
+
+                    if ($request->avg_rating)
+                    {
+                        $q->where('avg_rating','like',$request->avg_rating);
+                    }
+
+                    $providers = $q->orderBy('id','DESC')->get();
+                    $providersArr = [];
+                        foreach ($providers as $pro) {
+                            // $getsubcatDetails = DB::table('subcat_store')
+                            // ->where('id',$appointment['store_id'])
+                            // ->select('logo','name','subcat_id','address','status','rating')
+                            // ->first();
+                            // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
+                            // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
+                            // $serviceLogo = $subcatDetail['logo'];
+                            $logo = url('/').'/public/images/provider_pictures/'.$pro['picture'];
+                            $list['id'] = (String)$pro['id'];
+                            $list['provider_type'] = (String)$pro['provider_type'];
+                            $list['name'] = $pro['name'];
+                            $list['building_no'] = $pro['building_no'];
+                            $list['town_city'] = $pro['town_city'];
+                            $list['state'] = $pro['state'];
+                            $list['country'] = $pro['country'];
+                            $list['phone_no'] = $pro['phone_no'];
+                            $list['ratings'] = $pro['ratings'];
+                            // $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
+                            // $list['auther_id'] = $appointment['store_id'];
+                            $list['logo'] = $logo;
+                            // $list['location'] = $subcatDetail['address'];
+                            // $list['name'] = $subcatDetail['name'];
+                            // $list['status'] = $appointment['status'];
+                            // $list['rating'] = $subcatDetail['rating'];
+                            $providersArr[] = $list;
+                        }
+                        return response()->json([
+                            'status'=>'true',
+                            'message'=>'data fetched successfully',
+                            'data'=>$providersArr
+                        ], $this->successStatus);
+                }elseif($request->type == '2'){
+                    $q = Provider::query();
+                    if ($request->country)
+                    {
+                        $q->where('name','like',$request->country);
+                    }
+
+                    if ($request->city)
+                    {
+                        $q->where('city','like',$request->city);
+                    }
+
+                    if ($request->specility)
+                    {
+                        $q->where('specility','like',$request->specility);
+                    }
+
+                    if ($request->insurance)
+                    {
+                        $q->where('insurance','like',$request->insurance);
+                    }
+
+                    if ($request->country)
+                    {
+                        $q->where('name','like',$request->country);
+                    }
+
+                    if ($request->gender)
+                    {
+                        $q->where('gender','like',$request->gender);
+                    }
+
+                    if ($request->availablity_type)
+                    {
+                        // $q->
+                    }
+
+                    if ($request->availablity_time)
+                    {
+                        $q->where('availablity_time','like',$request->availablity_time);
+                    }
+
+                    if ($request->with_profile_images)
+                    {
+                        $q->where('with_profile_images','like',$request->with_profile_images);
+                    }
+
+                    if ($request->avg_rating)
+                    {
+                        $q->where('avg_rating','like',$request->avg_rating);
+                    }
+
+                    $providers = $q->orderBy('id','DESC')->get();
+                    $providersArr = [];
+                    foreach ($providers as $pro) {
+                        // $getsubcatDetails = DB::table('subcat_store')
+                        // ->where('id',$appointment['store_id'])
+                        // ->select('logo','name','subcat_id','address','status','rating')
+                        // ->first();
+                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
+                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
+                        // $serviceLogo = $subcatDetail['logo'];
+                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
+                        $logo = url('/').'/public/images/provider_pictures/'.$pro['picture'];
+                        $list['id'] = (String)$pro['id'];
+                        $list['provider_type'] = (String)$pro['provider_type'];
+                        $list['name'] = $pro['name'];
+                        $list['building_no'] = $pro['building_no'];
+                        $list['town_city'] = $pro['town_city'];
+                        $list['state'] = $pro['state'];
+                        $list['country'] = $pro['country'];
+                        $list['phone_no'] = $pro['phone_no'];
+                        $list['ratings'] = $pro['ratings'];
+                        // $list['auther_id'] = $appointment['store_id'];
+                        // $list['logo'] = $logo;
+                        // $list['location'] = $subcatDetail['address'];
+                        // $list['name'] = $subcatDetail['name'];
+                        // $list['status'] = $appointment['status'];
+                        // $list['rating'] = $subcatDetail['rating'];
+                        $providersArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$providersArr
+                    ], $this->successStatus);
+                }
+            }else{
+                return response()->json([
+                    'status'=>'false',
+                    'message'=>'Unauthenticated User'
+                ], $this->badrequest);
+            }
+        }
+    }
+
+    public function providerDetails(Request $request){
+
     }
 
     public function appointHistoryandUpcomming(Request $request){
@@ -1245,7 +1452,7 @@ public function bookAppointment(Request $request){
                        return response()->json([
                             'status'=>'true',
                             'message'=>'Appointment Not Found',
-                        ], $this->successStatus); 
+                        ], $this->successStatus);
                     }
                 }
             }else{
@@ -1294,5 +1501,5 @@ public function bookAppointment(Request $request){
 }
 
 
-    
+
 
