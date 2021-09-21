@@ -79,7 +79,7 @@ Route::post('/resendOtp2', [ApiController::class, 'resendOtp2']);
 Route::post('/verifyOtp2', [ApiController::class, 'verifyOtp2']);
 Route::post('/changePassword3', [ApiController::class, 'changePassword3']);
 
-Route::post('/editProfile', [ApiController::class, 'editProfile']);
+//Route::post('/editProfile', [ApiController::class, 'editProfile']); please change route name before comment out it 
 Route::post('/changePassword2', [ApiController::class, 'changePassword2']);
 Route::post('/changeLanguage', [ApiController::class, 'changeLanguage']);
 Route::post('/customerSupport', [ApiController::class, 'customerSupport']);
