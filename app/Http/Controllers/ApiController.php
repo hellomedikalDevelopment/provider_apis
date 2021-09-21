@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 //use Kreait\Firebase\ServiceAccount;
 //use Kreait\Firebase\Database;
 use Illuminate\Http\Request;
-
+use App\Models\Provider;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\State;
@@ -1088,14 +1088,15 @@ public function bookAppointment(Request $request){
     }
 
     public function findDoctor(Request $request){
+        // dd("jj");
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'type' => 'required',
-            'country' => 'required',
-            'city' => 'required',
-            'specility' => 'required',
-            'insurance' => 'required',
-            'availablity' => 'required',
+            // 'country' => 'required',
+            // 'city' => 'required',
+            // 'specility' => 'required',
+            // 'insurance' => 'required',
+            // 'availablity' => 'required',
             // 'gender' => 'required', //advance filter
             // 'availablity_type' => 'required', //advance filter
             // 'language' => 'required', //advance filter
@@ -1110,68 +1111,51 @@ public function bookAppointment(Request $request){
             if($userExist){
                 if ($request->type == '1') {
                     $q = Provider::query();
-                    if ($request->country)
-                    {
-                        $q->where('name','like',$request->country);
+                    if ($request->country){
+                        $q->where('country','like',$request->country);
+                    }
+                    if ($request->city){
+                        $q->where('town_city','like',$request->city);
                     }
 
-                    if ($request->city)
-                    {
-                        $q->where('city','like',$request->city);
+                    if ($request->specility){
+                        $q->where('specialization','like',$request->specility);
                     }
 
-                    if ($request->specility)
-                    {
-                        $q->where('specility','like',$request->specility);
+                    if ($request->insurance){
+                        // $q->where('insurance','like',$request->insurance);
                     }
 
-                    if ($request->insurance)
-                    {
-                        $q->where('insurance','like',$request->insurance);
+                    if ($request->state){
+                        $q->where('state','like',$request->state);
                     }
 
-                    if ($request->country)
-                    {
-                        $q->where('name','like',$request->country);
-                    }
-
-                    if ($request->gender)
-                    {
+                    if ($request->gender){
                         $q->where('gender','like',$request->gender);
                     }
 
-                    if ($request->availablity_type)
-                    {
-                        // $q->
+                    if ($request->availablity_type){
+                        $q->where('visit_type','like',$request->gender);
                     }
 
-                    if ($request->availablity_time)
-                    {
-                        $q->where('availablity_time','like',$request->availablity_time);
+                    if ($request->availablity_time){
+                        $q->where('open_from','like',$request->availablity_time);
                     }
 
-                    if ($request->with_profile_images)
-                    {
-                        $q->where('with_profile_images','like',$request->with_profile_images);
+                    if ($request->with_profile_images){
+                        $q->where('profile_pic_uploaded',$request->with_profile_images);
                     }
 
-                    if ($request->avg_rating)
-                    {
-                        $q->where('avg_rating','like',$request->avg_rating);
+                    if ($request->avg_rating){
+                        $q->where('ratings','like',$request->avg_rating);
                     }
 
                     $providers = $q->orderBy('id','DESC')->get();
+                    // print_r($providers);die();
                     $providersArr = [];
                         foreach ($providers as $pro) {
-                            // $getsubcatDetails = DB::table('subcat_store')
-                            // ->where('id',$appointment['store_id'])
-                            // ->select('logo','name','subcat_id','address','status','rating')
-                            // ->first();
-                            // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-                            // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-                            // $serviceLogo = $subcatDetail['logo'];
-                            $logo = url('/').'/public/images/provider_pictures/'.$pro['picture'];
-                            $list['id'] = (String)$pro['id'];
+                            $logo = url('/').'/images/provider_pictures/'.$pro['profile_image'];
+                            $list['provider_id'] = (String)$pro['id'];
                             $list['provider_type'] = (String)$pro['provider_type'];
                             $list['name'] = $pro['name'];
                             $list['building_no'] = $pro['building_no'];
@@ -1180,13 +1164,8 @@ public function bookAppointment(Request $request){
                             $list['country'] = $pro['country'];
                             $list['phone_no'] = $pro['phone_no'];
                             $list['ratings'] = $pro['ratings'];
-                            // $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
-                            // $list['auther_id'] = $appointment['store_id'];
                             $list['logo'] = $logo;
-                            // $list['location'] = $subcatDetail['address'];
-                            // $list['name'] = $subcatDetail['name'];
-                            // $list['status'] = $appointment['status'];
-                            // $list['rating'] = $subcatDetail['rating'];
+                            $list['isLiked'] = '0';
                             $providersArr[] = $list;
                         }
                         return response()->json([
@@ -1196,84 +1175,61 @@ public function bookAppointment(Request $request){
                         ], $this->successStatus);
                 }elseif($request->type == '2'){
                     $q = Provider::query();
-                    if ($request->country)
-                    {
-                        $q->where('name','like',$request->country);
+                    if ($request->country){
+                        $q->where('country','like',$request->country);
+                    }
+                    if ($request->city){
+                        $q->where('town_city','like',$request->city);
                     }
 
-                    if ($request->city)
-                    {
-                        $q->where('city','like',$request->city);
+                    if ($request->specility){
+                        $q->where('specialization','like',$request->specility);
                     }
 
-                    if ($request->specility)
-                    {
-                        $q->where('specility','like',$request->specility);
+                    if ($request->insurance){
+                        // $q->where('insurance','like',$request->insurance);
                     }
 
-                    if ($request->insurance)
-                    {
-                        $q->where('insurance','like',$request->insurance);
+                    if ($request->state){
+                        $q->where('state','like',$request->state);
                     }
 
-                    if ($request->country)
-                    {
-                        $q->where('name','like',$request->country);
-                    }
-
-                    if ($request->gender)
-                    {
+                    if ($request->gender){
                         $q->where('gender','like',$request->gender);
                     }
 
-                    if ($request->availablity_type)
-                    {
-                        // $q->
+                    if ($request->availablity_type){
+                        $q->where('visit_type','like',$request->gender);
                     }
 
-                    if ($request->availablity_time)
-                    {
-                        $q->where('availablity_time','like',$request->availablity_time);
+                    if ($request->availablity_time){
+                        $q->where('open_from','like',$request->availablity_time);
                     }
 
-                    if ($request->with_profile_images)
-                    {
-                        $q->where('with_profile_images','like',$request->with_profile_images);
+                    if ($request->with_profile_images){
+                        $q->where('profile_pic_uploaded',$request->with_profile_images);
                     }
 
-                    if ($request->avg_rating)
-                    {
-                        $q->where('avg_rating','like',$request->avg_rating);
+                    if ($request->avg_rating){
+                        $q->where('ratings','like',$request->avg_rating);
                     }
 
                     $providers = $q->orderBy('id','DESC')->get();
                     $providersArr = [];
                     foreach ($providers as $pro) {
-                        // $getsubcatDetails = DB::table('subcat_store')
-                        // ->where('id',$appointment['store_id'])
-                        // ->select('logo','name','subcat_id','address','status','rating')
-                        // ->first();
-                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-                        // $serviceLogo = $subcatDetail['logo'];
-                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
-                        $logo = url('/').'/public/images/provider_pictures/'.$pro['picture'];
-                        $list['id'] = (String)$pro['id'];
-                        $list['provider_type'] = (String)$pro['provider_type'];
-                        $list['name'] = $pro['name'];
-                        $list['building_no'] = $pro['building_no'];
-                        $list['town_city'] = $pro['town_city'];
-                        $list['state'] = $pro['state'];
-                        $list['country'] = $pro['country'];
-                        $list['phone_no'] = $pro['phone_no'];
-                        $list['ratings'] = $pro['ratings'];
-                        // $list['auther_id'] = $appointment['store_id'];
-                        // $list['logo'] = $logo;
-                        // $list['location'] = $subcatDetail['address'];
-                        // $list['name'] = $subcatDetail['name'];
-                        // $list['status'] = $appointment['status'];
-                        // $list['rating'] = $subcatDetail['rating'];
-                        $providersArr[] = $list;
+                        $logo = url('/').'/public/images/provider_pictures/'.$pro['profile_image'];
+                            $list['provider_id'] = (String)$pro['id'];
+                            $list['provider_type'] = (String)$pro['provider_type'];
+                            $list['name'] = $pro['name'];
+                            $list['building_no'] = $pro['building_no'];
+                            $list['town_city'] = $pro['town_city'];
+                            $list['state'] = $pro['state'];
+                            $list['country'] = $pro['country'];
+                            $list['phone_no'] = $pro['phone_no'];
+                            $list['ratings'] = $pro['ratings'];
+                            $list['logo'] = $logo;
+                            $list['isLiked'] = '0';
+                            $providersArr[] = $list;
                     }
                     return response()->json([
                         'status'=>'true',
@@ -1291,7 +1247,61 @@ public function bookAppointment(Request $request){
     }
 
     public function providerDetails(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'provider_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
+        }else{
+            $provider = Provider::where('id',$request->provider_id)->first();
+            if ($provider) {
+                $provider['profile_image'] = url('/').'/public/images/provider_pictures/'.$provider['profile_image'];
+                $customerRating[] = array(
+                    'name'=> 'test user',
+                    'image'=> url('/').'/public/images/user_pictures/default.jpg',
+                    'rating'=> "4.0",
+                    'comment'=> "test data",
+                    'datetime'=> "2021-09-01 01:15"
+                );
+                $ratingArray = array(
+                    'overall_rating'=> "5.0",
+                    'wait_time'=> "4.0",
+                    'bedside_manner'=> "5.0",
+                    'ratingArray'=>$customerRating
+                );
 
+                $slotArray[] = array(
+                    'id'=> "1",
+                    'time'=> "09:00 AM",
+                    'is_booked'=> "0",
+                    'status'=> "0",
+                );
+                $slotsDetails = array(
+                    'provider_id'=> "1",
+                    'provider_name'=> "dummy clinic",
+                    'provider_address'=> "raw test, witting 517 app 1547",
+                    'provider_phone'=> "+178542586",
+                    'slots'=> $slotArray,
+                );
+                
+                $providerArray = array(
+                    'providerDetails'=>$provider,
+                    'ratingDetails'=>$ratingArray,
+                    'slotDetails'=>$slotsDetails,
+                );
+                return response()->json([
+                    'status'=>'true',
+                    'message'=>'data fetched successfully',
+                    'data'=>$providerArray
+                ], $this->successStatus);
+            }else{
+                return response()->json([
+                    'status'=>'false',
+                    'message'=>'No Data Found'
+                ], $this->badrequest);
+            }
+        }
     }
 
     public function appointHistoryandUpcomming(Request $request){
