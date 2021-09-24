@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:C2ubbQAoBh7DoQOo+09ez/ufF2YjA99Wen7u5w5aBVA=',
+    'key' => '',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -262,7 +262,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,7 +272,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'unix_socket' => '',
@@ -292,7 +292,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -307,7 +307,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -422,7 +422,7 @@
         'url' => NULL,
         'username' => 'Laravel Log',
         'emoji' => ':boom:',
-        'level' => 'critical',
+        'level' => 'debug',
       ),
       'papertrail' => 
       array (
@@ -475,8 +475,8 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
-        'port' => '2525',
+        'host' => 'mailhog',
+        'port' => '1025',
         'encryption' => NULL,
         'username' => NULL,
         'password' => NULL,
@@ -599,7 +599,7 @@
   ),
   'session' => 
   array (
-    'driver' => 'database',
+    'driver' => 'file',
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,

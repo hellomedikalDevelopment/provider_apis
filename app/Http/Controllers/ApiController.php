@@ -1022,7 +1022,7 @@ function getTimeSlot($interval, $start, $end){
     return $time;
 }
 
-public function bookAppointment(Request $request){
+    public function bookAppointment(Request $request){
         $validator = Validator::make($request->all(), [
             'entity_id' => 'required',
             'user_id' => 'required',
@@ -1301,6 +1301,51 @@ public function bookAppointment(Request $request){
                     'message'=>'No Data Found'
                 ], $this->badrequest);
             }
+        }
+    }
+
+    public function preAppointmentDetails(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
+        }else{
+            $specialization = Provider::select('specialization')->inRandomOrder()->limit(10)->get();
+            $specializationArray = [];
+            foreach($specialization as $specs)
+            {
+                if($specs == '')
+                {
+                    unset($link);
+                }
+                $specList['specialization'] = $specs['specialization'];
+                $specializationArray[] = $specList;
+            }
+            $data = array_filter($specializationArray);
+            print_r($data);die();
+            $getCountries = Country::where('parent_id',0)->get();
+            $countryArr = [];
+            foreach ($getCountries as $key) {
+                $getCities = Country::where('parent_id',$key['id'])->get();
+                $cityArr = [];
+                foreach ($getCities as $city) {
+                    $cities['id'] = (String)$city['id'];
+                    $cities['parent_id'] = (String)$city['parent_id'];
+                    $cities['name'] = $city['name'];
+                    $cityArr[] = $cities;
+                }
+                $list['id'] = (String)$key['id'];
+                $list['name'] = $key['name'];
+                $list['cities'] = $cityArr;
+                $countryArr[] = $list;
+            }
+            return response()->json([
+                'status'=>'true',
+                'message'=>'data fetched successfully',
+                'country_cities'=>$countryArr,
+                'specialization'=>$array
+            ], $this->successStatus);
         }
     }
 

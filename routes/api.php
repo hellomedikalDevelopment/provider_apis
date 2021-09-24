@@ -101,6 +101,7 @@ Route::post('/reorderandCancel', [ApiController::class, 'reorderandCancel']);
 Route::post('/addReview', [ApiController::class, 'addReview']);
 Route::post('/findDoctor', [ApiController::class, 'findDoctor']);
 Route::post('/providerDetails', [ApiController::class, 'providerDetails']);
+Route::post('/preAppointmentDetails', [ApiController::class, 'preAppointmentDetails']);
 
 /*User end*/
 
