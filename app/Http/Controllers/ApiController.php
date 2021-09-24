@@ -1311,19 +1311,19 @@ function getTimeSlot($interval, $start, $end){
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
-            $specialization = Provider::select('specialization')->inRandomOrder()->limit(10)->get();
-            $specializationArray = [];
-            foreach($specialization as $specs)
-            {
-                if($specs == '')
-                {
-                    unset($link);
-                }
-                $specList['specialization'] = $specs['specialization'];
-                $specializationArray[] = $specList;
-            }
-            $data = array_filter($specializationArray);
-            print_r($data);die();
+            // $specialization = Provider::select('specialization')->inRandomOrder()->limit(10)->get();
+            // $specializationArray = [];
+            // foreach($specialization as $specs)
+            // {
+            //     if($specs == '')
+            //     {
+            //         unset($link);
+            //     }
+            //     $specList['specialization'] = $specs['specialization'];
+            //     $specializationArray[] = $specList;
+            // }
+            // $data = array_filter($specializationArray);
+            // print_r($data);die();
             $getCountries = Country::where('parent_id',0)->get();
             $countryArr = [];
             foreach ($getCountries as $key) {
@@ -1344,7 +1344,7 @@ function getTimeSlot($interval, $start, $end){
                 'status'=>'true',
                 'message'=>'data fetched successfully',
                 'country_cities'=>$countryArr,
-                'specialization'=>$array
+                // 'specialization'=>$array
             ], $this->successStatus);
         }
     }
