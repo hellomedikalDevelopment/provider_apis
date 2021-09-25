@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Password;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
 use DateTime;
+use App\Models\Clinic_doctors;
 
 class ProviderController extends Controller
 {
@@ -763,7 +764,7 @@ class ProviderController extends Controller
        $user=providerSchedule::where(array("providers_id"=>$provider_id))->first(); 
        if($user==null){
            foreach($data as $single)
-           {
+           { 
              $Days=array("Sun"=>'',"Mon"=>'',"Tue"=>'',"Wed"=>'',"Thu"=>'',"Fri"=>'',"Sat"=>'');
                 
                 $DateFinalArray[$recive_date][]=array($single['type']=>array("clinicName"=>$single['clinicName'],"type"=>$single['type'],"timing"=>$single['timing'],"repeat"=>$single['repeat']));
@@ -944,101 +945,215 @@ class ProviderController extends Controller
                 return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], $this->successStatus);
             }
             else{
-                  $videoDateWise=array();
-                  $inPersonDateWise=array();
-                  $person=array();
-                  $video=array();
-                  $daywiseData=null;
-                  $reciveDate=$request->viewdate;
-                  $NewreciveDate=str_ireplace('-', '/', $reciveDate); 
-                  $covertDate=date("Y-m-d", strtotime($NewreciveDate));
-                  $timestamp = strtotime($covertDate);
-                  $day = date('D', $timestamp); 
-                  $allData=providerSchedule::where(array('providers_id'=>$request->providers_id))->first();
-                  if($allData){
-                    $dataDataDecode=json_decode($allData->date_wise,true);
-                    if(array_key_exists($reciveDate,$dataDataDecode)){ 
-                        if(isset($dataDataDecode[$reciveDate][0])){
+                   //check is a independent or withclinic
+                $user=Provider::where(array('id'=>$request->providers_id,'provider_type'=>1,'dr_choice'=>1))->first();
+                $videoDateWise=array();
+                          $inPersonDateWise=array();
+                          $person=array();
+                          $video=array();
+                          $daywiseData=null;
+                          $reciveDate=$request->viewdate;
+                          $NewreciveDate=str_ireplace('-', '/', $reciveDate); 
+                          $covertDate=date("Y-m-d", strtotime($NewreciveDate));
+                          $timestamp = strtotime($covertDate);
+                          $day = date('D', $timestamp); 
+                  if($user==null){
 
-                            if(isset($dataDataDecode[$reciveDate][0]['person'])){
-                                 $inPersonDateWise=$dataDataDecode[$reciveDate][0]['person'];
-                              }else{
-                                $videoDateWise=$dataDataDecode[$reciveDate][0]['video'];
-                            }
-                        }
-                        if(isset($dataDataDecode[$reciveDate][1])){
-                             if(isset($dataDataDecode[$reciveDate][1]['person'])){
-                                  $videoDateWise=$dataDataDecode[$reciveDate][1]['person'];
-                              }else{
-                                $videoDateWise=$dataDataDecode[$reciveDate][1]['video'];
-                            }
-                            
-                        }
-
-                        if(!empty($inPersonDateWise['timing']) && !empty($videoDateWise['timing'] ))
-                        {
-                        $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$inPersonDateWise,1 => $videoDateWise));
-                        }elseif(!empty($inPersonDateWise['timing'])){
-                             $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$inPersonDateWise));
-                        }elseif(!empty($videoDateWise['timing'])){
-                             $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$videoDateWise));
-                        }else{
-                            $RES=array('status'=>"0",'message'=>"No slots found");
-                            
-                        }
-                       return response()->json($RES, 200);
-                    }else{    
-                        $dayDataDecode=json_decode($allData->day_wise,true);
-                        if(isset($dayDataDecode[0])) {
-
-                            if(isset($dayDataDecode[0]['person'])){
-                              $person=array('clinicName'=>$dayDataDecode[0]['person']['clinicName'],'type'=>$dayDataDecode[0]['person']['type'],'timing'=>$dayDataDecode[0]['person']['timing'][$day]);
-                            }else{
-                                $video=array('clinicName'=>$dayDataDecode[0]['video']['clinicName'],'type'=>$dayDataDecode[0]['video']['type'],'timing'=>$dayDataDecode[0]['video']['timing'][$day]);
-                            }
-                         }
-                         if(isset($dayDataDecode[1])) {
-
-                             if(isset($dayDataDecode[1]['person'])){
-                              $person=array('clinicName'=>$dayDataDecode[1]['person']['clinicName'],'type'=>$dayDataDecode[1]['person']['type'],'timing'=>$dayDataDecode[1]['person']['timing'][$day]);
-                            }else{
-                                $video=array('clinicName'=>$dayDataDecode[1]['video']['clinicName'],'type'=>$dayDataDecode[1]['video']['type'],'timing'=>$dayDataDecode[1]['video']['timing'][$day]);
-                            }
-                             
-                            }
-                            $dayDate=json_decode($allData->day_delete,true);
-                            if($dayDate){
-                            if(array_key_exists($reciveDate,$dayDate)){
-                                    $innerArray=$dayDate[$reciveDate];
-                                    if(in_array("person",  $innerArray))
-                                    {
-                                        $person['timing']='';
-                                    }
-                                     if(in_array("video",  $innerArray))
-                                    {
-                                        $video['timing']='';
-                                    }
-                            }}
-
-                        if(!empty($person['timing']) && !empty($video['timing']) )
-                        { 
-                        $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$person,1 => $video));
-                        }elseif(!empty($person['timing'])){
-                             $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$person));
-                        }elseif(!empty($video['timing'])){
-                             $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$video));
-                        }else{
-                            $RESDAY=array('status'=>"0",'message'=>"No slots found");
-                            
-                        }
-                        
-                          return response()->json($RESDAY, 200);
                           
-                    }
-                }else{
+                          $allData=providerSchedule::where(array('providers_id'=>$request->providers_id))->first();
+                          if($allData){
+                            $dataDataDecode=json_decode($allData->date_wise,true);
+                            if(array_key_exists($reciveDate,$dataDataDecode)){ 
+                                if(isset($dataDataDecode[$reciveDate][0])){
 
-                   return response()->json(['message'=>'nothing found'], 200);
-                }
+                                    if(isset($dataDataDecode[$reciveDate][0]['person'])){
+                                         $inPersonDateWise=$dataDataDecode[$reciveDate][0]['person'];
+                                      }else{
+                                        $videoDateWise=$dataDataDecode[$reciveDate][0]['video'];
+                                    }
+                                }
+                                if(isset($dataDataDecode[$reciveDate][1])){
+                                     if(isset($dataDataDecode[$reciveDate][1]['person'])){
+                                          $videoDateWise=$dataDataDecode[$reciveDate][1]['person'];
+                                      }else{
+                                        $videoDateWise=$dataDataDecode[$reciveDate][1]['video'];
+                                    }
+                                    
+                                }
+
+                                if(!empty($inPersonDateWise['timing']) && !empty($videoDateWise['timing'] ))
+                                {
+                                $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$inPersonDateWise,1 => $videoDateWise));
+                                }elseif(!empty($inPersonDateWise['timing'])){
+                                     $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$inPersonDateWise));
+                                }elseif(!empty($videoDateWise['timing'])){
+                                     $RES=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$videoDateWise));
+                                }else{
+                                    $RES=array('status'=>"0",'message'=>"No slots found");
+                                    
+                                }
+                               return response()->json($RES, 200);
+                            }else{    
+                                $dayDataDecode=json_decode($allData->day_wise,true);
+                                if(isset($dayDataDecode[0])) {
+
+                                    if(isset($dayDataDecode[0]['person'])){
+                                      $person=array('clinicName'=>$dayDataDecode[0]['person']['clinicName'],'type'=>$dayDataDecode[0]['person']['type'],'timing'=>$dayDataDecode[0]['person']['timing'][$day]);
+                                    }else{
+                                        $video=array('clinicName'=>$dayDataDecode[0]['video']['clinicName'],'type'=>$dayDataDecode[0]['video']['type'],'timing'=>$dayDataDecode[0]['video']['timing'][$day]);
+                                    }
+                                 }
+                                 if(isset($dayDataDecode[1])) {
+
+                                     if(isset($dayDataDecode[1]['person'])){
+                                      $person=array('clinicName'=>$dayDataDecode[1]['person']['clinicName'],'type'=>$dayDataDecode[1]['person']['type'],'timing'=>$dayDataDecode[1]['person']['timing'][$day]);
+                                    }else{
+                                        $video=array('clinicName'=>$dayDataDecode[1]['video']['clinicName'],'type'=>$dayDataDecode[1]['video']['type'],'timing'=>$dayDataDecode[1]['video']['timing'][$day]);
+                                    }
+                                     
+                                    }
+                                    $dayDate=json_decode($allData->day_delete,true);
+                                    if($dayDate){
+                                    if(array_key_exists($reciveDate,$dayDate)){
+                                            $innerArray=$dayDate[$reciveDate];
+                                            if(in_array("person",  $innerArray))
+                                            {
+                                                $person['timing']='';
+                                            }
+                                             if(in_array("video",  $innerArray))
+                                            {
+                                                $video['timing']='';
+                                            }
+                                    }}
+
+                                if(!empty($person['timing']) && !empty($video['timing']) )
+                                { 
+                                $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$person,1 => $video));
+                                }elseif(!empty($person['timing'])){
+                                     $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$person));
+                                }elseif(!empty($video['timing'])){
+                                     $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>array(0 =>$video));
+                                }else{
+                                    $RESDAY=array('status'=>"0",'message'=>"No slots found");
+                                    
+                                }
+                                
+                                  return response()->json($RESDAY, 200);
+                                  
+                            }
+                        }else{
+
+                           return response()->json(['message'=>'nothing found'], 200);
+                        }
+                  }else{  
+                        // write code here
+                      $data=array();
+                      $bata=[];
+                       $jIndex=0;
+                        $GetDocObject=Clinic_doctors::select('clinic_id')->where(['doctor_id'=>$request->providers_id])->get();
+                         foreach($GetDocObject as $each){ 
+                            $clinic_id_here= $each->clinic_id; 
+                          $allData=Clinic_doctors::where(array('doctor_id'=>$request->providers_id,'clinic_id'=>$clinic_id_here))->first();
+                          if($allData){
+                            $dataDataDecode=json_decode($allData->date_wise,true);
+                            if(array_key_exists($reciveDate,$dataDataDecode)){ 
+                                if(isset($dataDataDecode[$reciveDate][0])){
+
+                                    if(isset($dataDataDecode[$reciveDate][0]['person'])){
+                                         $inPersonDateWise=$dataDataDecode[$reciveDate][0]['person'];
+                                      }else{
+                                        $videoDateWise=$dataDataDecode[$reciveDate][0]['video'];
+                                    }
+                                }
+                                if(isset($dataDataDecode[$reciveDate][1])){
+                                     if(isset($dataDataDecode[$reciveDate][1]['person'])){
+                                          $videoDateWise=$dataDataDecode[$reciveDate][1]['person'];
+                                      }else{
+                                        $videoDateWise=$dataDataDecode[$reciveDate][1]['video'];
+                                    }
+                                    
+                                }
+
+                                if(!empty($inPersonDateWise['timing']) && !empty($videoDateWise['timing'] ))
+                                {
+                                $data[]=array(0 =>$inPersonDateWise,1 => $videoDateWise);
+                                }elseif(!empty($inPersonDateWise['timing'])){
+                                     $data[]=array(0 =>$inPersonDateWise);
+                                }elseif(!empty($videoDateWise['timing'])){
+                                     $data[]=array(0 =>$videoDateWise);
+                                }else{
+                                    $data[]=array('status'=>"0",'message'=>"No slots found");
+                                    
+                                }
+                             //  return response()->json($RES, 200);
+                            }else{    
+                                $dayDataDecode=json_decode($allData->day_wise,true);
+                                if(isset($dayDataDecode[0])) {
+
+                                    if(isset($dayDataDecode[0]['person'])){
+                                      $person=array('clinicName'=>$dayDataDecode[0]['person']['clinicName'],'type'=>$dayDataDecode[0]['person']['type'],'timing'=>$dayDataDecode[0]['person']['timing'][$day]);
+                                    }else{
+                                        $video=array('clinicName'=>$dayDataDecode[0]['video']['clinicName'],'type'=>$dayDataDecode[0]['video']['type'],'timing'=>$dayDataDecode[0]['video']['timing'][$day]);
+                                    }
+                                 }
+                                 if(isset($dayDataDecode[1])) {
+
+                                     if(isset($dayDataDecode[1]['person'])){
+                                      $person=array('clinicName'=>$dayDataDecode[1]['person']['clinicName'],'type'=>$dayDataDecode[1]['person']['type'],'timing'=>$dayDataDecode[1]['person']['timing'][$day]);
+                                    }else{
+                                        $video=array('clinicName'=>$dayDataDecode[1]['video']['clinicName'],'type'=>$dayDataDecode[1]['video']['type'],'timing'=>$dayDataDecode[1]['video']['timing'][$day]);
+                                    }
+                                     
+                                    }
+                                    $dayDate=json_decode($allData->day_delete,true);
+                                    if($dayDate){
+                                    if(array_key_exists($reciveDate,$dayDate)){
+                                            $innerArray=$dayDate[$reciveDate];
+                                            if(in_array("person",  $innerArray))
+                                            {
+                                                $person['timing']='';
+                                            }
+                                             if(in_array("video",  $innerArray))
+                                            {
+                                                $video['timing']='';
+                                            }
+                                    }}
+
+                                if(!empty($person['timing']) && !empty($video['timing']) )
+                                { 
+                                $data[]=array(0 =>$person,1 => $video);
+                                }elseif(!empty($person['timing'])){
+                                     $data[]=array(0 =>$person);
+                                }elseif(!empty($video['timing'])){
+                                     $data[]=array(0 =>$video);
+                                }else{
+                                    $data[]=array('status'=>"0",'message'=>"No slots found");
+                                    
+                                }
+                                
+                                  //return response()->json($RESDAY, 200);
+                                  
+                            }
+                        } // end foreach
+                       
+                        for($i=0;$i<count($data);$i++)
+                        {
+                            if(isset($data[$i][0])){
+                                $bata[$jIndex]=$data[$i][0];$jIndex++;
+                            }
+                             if(isset($data[$i][1])){
+                                $bata[$jIndex]=$data[$i][1];$jIndex++;
+                            }
+                       
+                         }
+    
+                        
+                    } // else close for if clinic doctor
+                    
+                 $RESDAY=array('status'=>"1",'message'=>"Get shedual successfully",'type'=>'Independent','date'=>$reciveDate,'provider_id'=>$request->providers_id,'data'=>$bata);
+                    return response()->json($RESDAY, 200);
+                  }//part2
+                    
             }
     }   
 }

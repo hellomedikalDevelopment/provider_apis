@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => '',
+    'key' => 'base64:NLv67OOWO7a48M6GaExwmcKwkCib0Z/7ldhSALP9s0A=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -183,7 +183,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/var/www/html/provider_apis/storage/framework/cache/data',
+        'path' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -262,7 +262,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'providerapp',
+        'database' => 'u430269413_providerapp',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,9 +272,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
-        'username' => 'root',
-        'password' => 'Amit@123',
+        'database' => 'u430269413_providerapp',
+        'username' => 'phpmyadmin',
+        'password' => 'amit@123',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -292,9 +292,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
-        'username' => 'root',
-        'password' => 'Amit@123',
+        'database' => 'u430269413_providerapp',
+        'username' => 'phpmyadmin',
+        'password' => 'amit@123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -307,9 +307,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
-        'username' => 'root',
-        'password' => 'Amit@123',
+        'database' => 'u430269413_providerapp',
+        'username' => 'phpmyadmin',
+        'password' => 'amit@123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -350,12 +350,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/provider_apis/storage/app',
+        'root' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/provider_apis/storage/app/public',
+        'root' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -372,7 +372,7 @@
     ),
     'links' => 
     array (
-      '/var/www/html/provider_apis/public/storage' => '/var/www/html/provider_apis/storage/app/public',
+      '/home/bawa/Desktop/provider_with_amit/provider_apis/public/storage' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -406,13 +406,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
+        'path' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
+        'path' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -463,7 +463,7 @@
       ),
       'emergency' => 
       array (
-        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
+        'path' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -475,11 +475,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'mailhog',
-        'port' => '1025',
-        'encryption' => NULL,
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'smtp.gmail.com',
+        'port' => '587',
+        'encryption' => 'tls',
+        'username' => 'emmieandrewwork@gmail.com',
+        'password' => 'lhbxxjikhpslyxvu',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -512,15 +512,15 @@
     ),
     'from' => 
     array (
-      'address' => NULL,
-      'name' => 'Laravel',
+      'address' => 'hello@example.com',
+      'name' => 'Example',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/var/www/html/provider_apis/resources/views/vendor/mail',
+        0 => '/home/bawa/Desktop/provider_with_amit/provider_apis/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -603,7 +603,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/var/www/html/provider_apis/storage/framework/sessions',
+    'files' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -623,9 +623,9 @@
   array (
     'paths' => 
     array (
-      0 => '/var/www/html/provider_apis/resources/views',
+      0 => '/home/bawa/Desktop/provider_with_amit/provider_apis/resources/views',
     ),
-    'compiled' => '/var/www/html/provider_apis/storage/framework/views',
+    'compiled' => '/home/bawa/Desktop/provider_with_amit/provider_apis/storage/framework/views',
   ),
   'flare' => 
   array (

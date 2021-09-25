@@ -509,4 +509,6 @@ public function setScheduleByClinic(Request $request)
              }
          }
     }  
+
+   
 }
