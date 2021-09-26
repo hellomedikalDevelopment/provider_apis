@@ -1311,19 +1311,41 @@ function getTimeSlot($interval, $start, $end){
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
-            // $specialization = Provider::select('specialization')->inRandomOrder()->limit(10)->get();
-            // $specializationArray = [];
-            // foreach($specialization as $specs)
-            // {
-            //     if($specs == '')
-            //     {
-            //         unset($link);
-            //     }
-            //     $specList['specialization'] = $specs['specialization'];
-            //     $specializationArray[] = $specList;
-            // }
-            // $data = array_filter($specializationArray);
-            // print_r($data);die();
+            $specialization = array (
+              array("kaiser foundation group"),
+              array("United Health Group"),
+              array("Wellpoint Inc Group"),
+            );
+            $specsArr = [];
+            foreach($specialization as $specs){
+                 $slist['name'] = $specs[0];
+                 $specsArr[] = $slist;
+            }
+
+            $insurance = array (
+              array("kaiser foundation group"),
+              array("United Health Group"),
+              array("Wellpoint Inc Group"),
+            );
+            $incsArr = [];
+            foreach($insurance as $inc){
+                $ilist['name'] = $inc[0];
+                $incsArr[] = $ilist;
+            }
+
+            $availablity = array (
+              array("09:00 AM - 11:00 AM"),
+              array("11:00 AM - 01:00 PM"),
+              array("01:00 PM - 03:00 AM"),
+              array("03:00 PM - 05:00 PM"),
+              array("05:00 PM - 07:00 PM"),
+              array("07:00 PM - 09:00 PM"),
+            );
+            $availableArr = [];
+            foreach($availablity as $avail){
+                $alist['time'] = $avail[0];
+                $availableArr[] = $alist;
+            }
             $getCountries = Country::where('parent_id',0)->get();
             $countryArr = [];
             foreach ($getCountries as $key) {
@@ -1344,7 +1366,9 @@ function getTimeSlot($interval, $start, $end){
                 'status'=>'true',
                 'message'=>'data fetched successfully',
                 'country_cities'=>$countryArr,
-                // 'specialization'=>$array
+                'insurance'=>$incsArr,
+                'specility'=>$specsArr,
+                'availablity'=>$availableArr
             ], $this->successStatus);
         }
     }
