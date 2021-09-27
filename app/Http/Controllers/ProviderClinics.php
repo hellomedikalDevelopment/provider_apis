@@ -316,8 +316,9 @@ public function setScheduleByClinic(Request $request)
                   $timestamp = strtotime($covertDate);
                   $day = date('D', $timestamp); 
                   $allData=Clinic_doctors::where(array("doctor_id"=>$request->doctor_id,"clinic_id"=>$request->clinic_id))->first(); 
+                  // print_r($allData);die();
                   if(empty($allData)){return response()->json(['status'=>'0','message'=>'clinic and doctor not associated to each other'], 200);}
-                  if($allData->date_wise!=NULL){ 
+                  if($allData->date_wise!=NULL){
                     $dataDataDecode=json_decode($allData->date_wise,true);//print_r($dataDataDecode);die;
                     if(array_key_exists($reciveDate,$dataDataDecode)){ 
                         if(isset($dataDataDecode[$reciveDate][0])){

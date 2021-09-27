@@ -16,6 +16,8 @@ use App\Models\Review;
 use App\Models\Slots;
 use App\Models\Appointment;
 use App\Models\Timeslot;
+use App\Models\Clinic_doctors;
+use App\Models\ProviderImage;
 
 
 use Validator;
@@ -1249,7 +1251,8 @@ function getTimeSlot($interval, $start, $end){
     public function providerDetails(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'provider_id' => 'required'
+            'provider_id' => 'required',
+            'date' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
@@ -1257,6 +1260,12 @@ function getTimeSlot($interval, $start, $end){
             $provider = Provider::where('id',$request->provider_id)->first();
             if ($provider) {
                 $provider['profile_image'] = url('/').'/public/images/provider_pictures/'.$provider['profile_image'];
+                $provider['experience'] = "16 Years";
+                $provider['price'] = "$20.00";
+                $provider['tax'] = "$12.00";
+                $provider['highly_recommended'] = "93% of patient gave this doctor 5 stars";
+                $provider['excellent_wait_time'] = "100% of patient waited less than 30 minutes";
+                $provider['new_patient_appointment'] = "Appointment available for new patient on HelloMedikal app";
                 $customerRating[] = array(
                     'name'=> 'test user',
                     'image'=> url('/').'/public/images/user_pictures/default.jpg',
@@ -1271,6 +1280,28 @@ function getTimeSlot($interval, $start, $end){
                     'ratingArray'=>$customerRating
                 );
 
+                // $videoDateWise=array();
+                // $inPersonDateWise=array();
+                // $person=array();
+                // $video=array();
+                // $daywiseData=null;
+                // $reciveDate=$request->viewdate;
+                // $NewreciveDate=str_ireplace('-', '/', $reciveDate); 
+                // $covertDate=date("Y-m-d", strtotime($NewreciveDate));
+                // $timestamp = strtotime($covertDate);
+                // $day = date('D', $timestamp); 
+                // $allData=Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
+                // foreach ($allData as $key => $value) {
+                //     print_r($value);
+                // }
+                // die();
+                /*/storage/provider_media/'*/
+                $providerImages = ProviderImage::where('provider_id',$request->provider_id)->get();
+                $imgArr = [];
+                foreach ($providerImages as $imgs) {
+                    $imgList['image']  = url('/').'/storage/provider_media/'.$imgs['image'];
+                    $imgArr[] = $imgList;
+                }
                 $slotArray[] = array(
                     'id'=> "1",
                     'time'=> "09:00 AM",
@@ -1289,6 +1320,7 @@ function getTimeSlot($interval, $start, $end){
                     'providerDetails'=>$provider,
                     'ratingDetails'=>$ratingArray,
                     'slotDetails'=>$slotsDetails,
+                    'providerImages'=>$imgArr,
                 );
                 return response()->json([
                     'status'=>'true',
