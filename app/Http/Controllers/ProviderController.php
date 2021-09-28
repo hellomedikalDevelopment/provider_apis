@@ -158,6 +158,7 @@ class ProviderController extends Controller
                 'languages' => $existingUser->languages,
                 'education' => $existingUser->education,
                 'affilation' => $existingUser->affilation,
+                 'dr_choice'=> $existingUser->dr_choice,
                 'license' => $existingUser->license,
                 'certification' => $existingUser->certification,
                 'aboutyourself' => $existingUser->aboutyourself,
@@ -1093,7 +1094,7 @@ class ProviderController extends Controller
                                     if(isset($dayDataDecode[0]['person'])){
                                       $person=array('clinicName'=>$dayDataDecode[0]['person']['clinicName'],'type'=>$dayDataDecode[0]['person']['type'],'timing'=>$dayDataDecode[0]['person']['timing'][$day]);
                                     }else{
-                                        $video=array('clinicName'=>$dayDataDecode[0]['video']['clinicName'],'type'=>$dayDataDecode[0]['video']['type'],'timing'=>$dayDataDecode[0]['video']['timing'][$day]);
+                                        $video=array('clinicName'=>$dayDataDecode[0]['video']['clinicName'],'type'=>$muzdayDataDecode[0]['video']['type'],'timing'=>$dayDataDecode[0]['video']['timing'][$day]);
                                     }
                                  }
                                  if(isset($dayDataDecode[1])) {
