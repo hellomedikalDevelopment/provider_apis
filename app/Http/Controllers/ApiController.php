@@ -1257,9 +1257,44 @@ function getTimeSlot($interval, $start, $end){
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
-            $provider = Provider::where('id',$request->provider_id)->first();
+            $provider = Provider::where('id',$request->provider_id)->first()->toArray();
+
             if ($provider) {
+                $space = ' ';
+                $provider['address'] = $provider['building_no'].$space.$provider['town_city'].$space.$provider['state'].$space.$provider['country'].$space.$provider['zipcode'];
                 $provider['profile_image'] = url('/').'/public/images/provider_pictures/'.$provider['profile_image'];
+                $provider['id'] = $provider['id'];
+                $provider['provider_type'] = $provider['provider_type']?$provider['provider_type']:'';
+                $provider['name'] = $provider['name']?$provider['name']:'';
+                $provider['email'] = $provider['id']?$provider['id']:'';
+                $provider['phone_no'] = $provider['phone_no']?$provider['phone_no']:'';
+                $provider['gender'] = $provider['gender']?$provider['gender']:'';
+                $provider['address_type'] = $provider['address_type']?$provider['address_type']:'';
+                $provider['visit_type'] = $provider['visit_type']?$provider['visit_type']:'';
+                $provider['country'] = $provider['country']?$provider['country']:'';
+                $provider['state'] = $provider['state']?$provider['state']:'';
+                $provider['town_city'] = $provider['town_city']?$provider['town_city']:'';
+                $provider['zipcode'] = $provider['zipcode']?$provider['zipcode']:'';
+                $provider['building_no'] = $provider['building_no']?$provider['building_no']:'';
+                $provider['open_from'] = $provider['open_from']?$provider['open_from']:'';
+                $provider['open_to'] = $provider['open_to']?$provider['open_to']:'';
+                $provider['reapeat_schedule'] = $provider['reapeat_schedule']?$provider['reapeat_schedule']:'';
+                $provider['dr_choice'] = $provider['dr_choice']?$provider['dr_choice']:'';
+                $provider['area'] = $provider['area']?$provider['area']:'';
+                $provider['specialization'] = $provider['specialization']?$provider['specialization']:'';
+                $provider['training'] = $provider['training']?$provider['training']:'';
+                $provider['languages'] = $provider['languages']?$provider['languages']:'';
+                $provider['education'] = $provider['education']?$provider['education']:'';
+                $provider['affilation'] = $provider['affilation']?$provider['affilation']:'';
+                $provider['license'] = $provider['license']?$provider['license']:'';
+                $provider['certification'] = $provider['certification']?$provider['certification']:'';
+                $provider['aboutyourself'] = $provider['aboutyourself']?$provider['aboutyourself']:'';
+                $provider['profile_image'] = $provider['profile_image']?$provider['profile_image']:'';
+                $provider['ratings'] = $provider['ratings']?$provider['ratings']:'';
+                $provider['profile_pic_uploaded'] = $provider['profile_pic_uploaded']?$provider['profile_pic_uploaded']:'';
+                $provider['account_status'] = $provider['account_status']?$provider['account_status']:'';
+                $provider['created_at'] = $provider['created_at']?$provider['created_at']:'';
+                $provider['updated_at'] = $provider['updated_at']?$provider['updated_at']:'';
                 $provider['experience'] = "16 Years";
                 $provider['price'] = "$20.00";
                 $provider['tax'] = "$12.00";
