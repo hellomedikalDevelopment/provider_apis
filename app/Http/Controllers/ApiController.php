@@ -1315,21 +1315,24 @@ function getTimeSlot($interval, $start, $end){
                     'ratingArray'=>$customerRating
                 );
 
-                // $videoDateWise=array();
-                // $inPersonDateWise=array();
-                // $person=array();
-                // $video=array();
-                // $daywiseData=null;
-                // $reciveDate=$request->viewdate;
-                // $NewreciveDate=str_ireplace('-', '/', $reciveDate); 
-                // $covertDate=date("Y-m-d", strtotime($NewreciveDate));
-                // $timestamp = strtotime($covertDate);
-                // $day = date('D', $timestamp); 
-                // $allData=Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
-                // foreach ($allData as $key => $value) {
-                //     print_r($value);
-                // }
-                // die();
+                $slotsData = Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
+                $slotArr = json_decode($slotsData, true);
+                foreach ($slotArr as $key => $slots) {
+                    $slot = json_decode($slots['date_wise'], true);
+                    if ($slot) {
+                        foreach ($slot as $key1 => $value1) {
+                            if ($key1 == $request->date ) {
+                                foreach ($value1 as $key2 => $newvalue) {
+                                    // if ($request->type == 'person') {
+                                        print_r($newvalue);die();
+                                    // }
+                                }die();
+                            }
+                        }
+                    }else{
+                        $slotArray = [];
+                    }
+                }                
                 /*/storage/provider_media/'*/
                 $providerImages = ProviderImage::where('provider_id',$request->provider_id)->get();
                 $imgArr = [];

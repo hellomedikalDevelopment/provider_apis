@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'Krayin CRM',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => '',
+    'key' => 'base64:4HDEmGg44/PHRGxurCn4mOtFlAOGjmyxO1T0lozg1ho=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -223,7 +223,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'laravel_cache',
+    'prefix' => 'krayin_crm_cache',
   ),
   'cors' => 
   array (
@@ -262,7 +262,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'providerapp',
+        'database' => 'hello_hm',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,7 +272,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
+        'database' => 'hello_hm',
         'username' => 'root',
         'password' => 'Amit@123',
         'unix_socket' => '',
@@ -292,7 +292,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
+        'database' => 'hello_hm',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -307,7 +307,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'providerapp',
+        'database' => 'hello_hm',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -322,7 +322,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'laravel_database_',
+        'prefix' => 'krayin_crm_database_',
       ),
       'default' => 
       array (
@@ -512,8 +512,8 @@
     ),
     'from' => 
     array (
-      'address' => NULL,
-      'name' => 'Laravel',
+      'address' => 'laravel@krayincrm.com',
+      'name' => 'Krayin CRM',
     ),
     'markdown' => 
     array (
@@ -612,7 +612,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'krayin_crm_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
