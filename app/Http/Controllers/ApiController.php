@@ -1260,7 +1260,11 @@ function getTimeSlot($interval, $start, $end){
             $provider = Provider::where('id',$request->provider_id)->first()->toArray();
 
             if ($provider) {
+                if ($provider['provider_type'] == '1') {
+                    # code...
+                }
                 $space = ' ';
+                $provider['clinic_name'] = 'RML Heart Institute';
                 $provider['address'] = $provider['building_no'].$space.$provider['town_city'].$space.$provider['state'].$space.$provider['country'].$space.$provider['zipcode'];
                 $provider['profile_image'] = url('/').'/public/images/provider_pictures/'.$provider['profile_image'];
                 $provider['id'] = $provider['id'];
@@ -1296,8 +1300,8 @@ function getTimeSlot($interval, $start, $end){
                 $provider['created_at'] = $provider['created_at']?$provider['created_at']:'';
                 $provider['updated_at'] = $provider['updated_at']?$provider['updated_at']:'';
                 $provider['experience'] = "16 Years";
-                $provider['price'] = "$20.00";
-                $provider['tax'] = "$12.00";
+                $provider['price'] = "20.00";
+                $provider['tax'] = "12.00";
                 $provider['highly_recommended'] = "93% of patient gave this doctor 5 stars";
                 $provider['excellent_wait_time'] = "100% of patient waited less than 30 minutes";
                 $provider['new_patient_appointment'] = "Appointment available for new patient on HelloMedikal app";
@@ -1315,24 +1319,21 @@ function getTimeSlot($interval, $start, $end){
                     'ratingArray'=>$customerRating
                 );
 
-                $slotsData = Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
-                $slotArr = json_decode($slotsData, true);
-                foreach ($slotArr as $key => $slots) {
-                    $slot = json_decode($slots['date_wise'], true);
-                    if ($slot) {
-                        foreach ($slot as $key1 => $value1) {
-                            if ($key1 == $request->date ) {
-                                foreach ($value1 as $key2 => $newvalue) {
-                                    // if ($request->type == 'person') {
-                                        print_r($newvalue);die();
-                                    // }
-                                }die();
-                            }
-                        }
-                    }else{
-                        $slotArray = [];
-                    }
-                }                
+                // $videoDateWise=array();
+                // $inPersonDateWise=array();
+                // $person=array();
+                // $video=array();
+                // $daywiseData=null;
+                // $reciveDate=$request->viewdate;
+                // $NewreciveDate=str_ireplace('-', '/', $reciveDate); 
+                // $covertDate=date("Y-m-d", strtotime($NewreciveDate));
+                // $timestamp = strtotime($covertDate);
+                // $day = date('D', $timestamp); 
+                // $allData=Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
+                // foreach ($allData as $key => $value) {
+                //     print_r($value);
+                // }
+                // die();
                 /*/storage/provider_media/'*/
                 $providerImages = ProviderImage::where('provider_id',$request->provider_id)->get();
                 $imgArr = [];
@@ -1340,12 +1341,23 @@ function getTimeSlot($interval, $start, $end){
                     $imgList['image']  = url('/').'/storage/provider_media/'.$imgs['image'];
                     $imgArr[] = $imgList;
                 }
-                $slotArray[] = array(
-                    'id'=> "1",
-                    'time'=> "09:00 AM",
-                    'is_booked'=> "0",
-                    'status'=> "0",
-                );
+                // $slotArray[] = array(
+                //     'id'=> "1",
+                //     'time'=> "09:00 AM",
+                //     'is_booked'=> "0",
+                //     'status'=> "0",
+                // );
+                $slotArray = array (
+                  array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
+                  array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
+              );
                 $slotsDetails = array(
                     'provider_id'=> "1",
                     'provider_name'=> "dummy clinic",
