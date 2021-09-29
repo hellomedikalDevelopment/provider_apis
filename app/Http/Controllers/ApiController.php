@@ -1260,9 +1260,9 @@ function getTimeSlot($interval, $start, $end){
             $provider = Provider::where('id',$request->provider_id)->first()->toArray();
 
             if ($provider) {
-                if ($provider['provider_type'] == '1') {
-                    # code...
-                }
+                // if ($provider['provider_type'] == '1') {
+                //     # code...
+                // }
                 $space = ' ';
                 $provider['clinic_name'] = 'RML Heart Institute';
                 $provider['address'] = $provider['building_no'].$space.$provider['town_city'].$space.$provider['state'].$space.$provider['country'].$space.$provider['zipcode'];
@@ -1335,6 +1335,24 @@ function getTimeSlot($interval, $start, $end){
                 // }
                 // die();
                 /*/storage/provider_media/'*/
+                // $slotsData = Clinic_doctors::where(array("doctor_id"=>$request->provider_id))->get();
+                // $slotArr = json_decode($slotsData, true);
+                // foreach ($slotArr as $key => $slots) {
+                //     $slot = json_decode($slots['date_wise'], true);
+                //     if ($slot) {
+                //         foreach ($slot as $key1 => $value1) {
+                //             if ($key1 == $request->date ) {
+                //                 foreach ($value1 as $key2 => $newvalue) {
+                //                     // if ($request->type == 'person') {
+                //                         print_r($newvalue);die();
+                //                     // }
+                //                 }die();
+                //             }
+                //         }
+                //     }else{
+                //         $slotArray = [];
+                //     }
+                // }
                 $providerImages = ProviderImage::where('provider_id',$request->provider_id)->get();
                 $imgArr = [];
                 foreach ($providerImages as $imgs) {
