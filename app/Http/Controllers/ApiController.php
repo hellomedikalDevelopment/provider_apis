@@ -1581,6 +1581,8 @@ function getTimeSlot($interval, $start, $end){
                         $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
                         $list['profile_image'] = $logo;
+                        $list['clinic_name'] = $clinic_name;
+                        $list['dr_name'] = $appointment['name'];
                         $list['created_at'] = $appointment['date'];
                         $list['address'] = $address;
                         $list['phone_no'] = $providerDetail['phone_no'];
