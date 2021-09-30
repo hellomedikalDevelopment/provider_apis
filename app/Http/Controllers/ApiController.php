@@ -1538,6 +1538,62 @@ function getTimeSlot($interval, $start, $end){
                         'message'=>'data fetched successfully',
                         'data'=>$cancelledArr
                     ], $this->successStatus);
+                }elseif ($request->appointment_type == 3) {
+                    $getAppointments = Appointment::where('user_id',$request->user_id)
+                    ->where('status','3')
+                    ->orderBy('id','DESC')
+                    ->get();
+                    $cancelledArr = [];
+                    foreach ($getAppointments as $appointment) {
+                        $providerDetail = Provider::where('id',$appointment['entity_id'])->first();
+                        $space = ' ';
+                        $clinic_name = 'RML Heart Institute';
+                        $address = $providerDetail['building_no'].$space.$providerDetail['town_city'].$space.$providerDetail['state'].$space.$providerDetail['country'].$space.$providerDetail['zipcode'];
+                        $serviceLogo = $providerDetail['profile_image'];
+                        $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
+                        $list['id'] = (String)$appointment['id'];
+                        $list['profile_image'] = $logo;
+                        $list['created_at'] = $appointment['date'];
+                        $list['address'] = $address;
+                        $list['phone_no'] = $providerDetail['phone_no'];
+                        $list['ratings'] = '4.7';
+                        $list['status'] = $appointment['status'];
+                        // $list['rating'] = $subcatDetail['rating'];
+                        $cancelledArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$cancelledArr
+                    ], $this->successStatus);
+                }elseif ($request->appointment_type == 4) {
+                    $getAppointments = Appointment::where('user_id',$request->user_id)
+                    ->where('status','4')
+                    ->orderBy('id','DESC')
+                    ->get();
+                    $cancelledArr = [];
+                    foreach ($getAppointments as $appointment) {
+                        $providerDetail = Provider::where('id',$appointment['entity_id'])->first();
+                        $space = ' ';
+                        $clinic_name = 'RML Heart Institute';
+                        $address = $providerDetail['building_no'].$space.$providerDetail['town_city'].$space.$providerDetail['state'].$space.$providerDetail['country'].$space.$providerDetail['zipcode'];
+                        $serviceLogo = $providerDetail['profile_image'];
+                        $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
+                        $list['id'] = (String)$appointment['id'];
+                        $list['profile_image'] = $logo;
+                        $list['created_at'] = $appointment['date'];
+                        $list['address'] = $address;
+                        $list['phone_no'] = $providerDetail['phone_no'];
+                        $list['ratings'] = '4.7';
+                        $list['status'] = $appointment['status'];
+                        // $list['rating'] = $subcatDetail['rating'];
+                        $cancelledArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$cancelledArr
+                    ], $this->successStatus);
                 }else{
                     return response()->json(['status'=>'false','message'=>'Invalid inputs'], $this->badrequest);
                 }
