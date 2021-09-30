@@ -1485,7 +1485,7 @@ function getTimeSlot($interval, $start, $end){
             if ($checkUser) {
                 if ($request->appointment_type == 1) {
                     $getAppointments = Appointment::where('user_id',$request->user_id)
-                    ->where('status','2')
+                    ->where('status','1')
                     ->orderBy('id','DESC')
                     ->get();
                     $histArr = [];
@@ -1512,7 +1512,7 @@ function getTimeSlot($interval, $start, $end){
                     ], $this->successStatus);
                 }elseif ($request->appointment_type == 2) {
                     $getAppointments = Appointment::where('user_id',$request->user_id)
-                    ->where('status','1')
+                    ->where('status','2')
                     ->orderBy('id','DESC')
                     ->get();
                     $cancelledArr = [];
