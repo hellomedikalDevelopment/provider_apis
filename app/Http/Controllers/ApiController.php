@@ -1504,7 +1504,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['ratings'] = '4.7';
                         $list['status'] = $appointment['status'];
                         $list['clinic_name'] = $clinic_name;
-                        $list['dr_name'] = $appointment['name'];
+                        $list['dr_name'] = $providerDetail['name'];
                         $histArr[] = $list;
                     }
                     return response()->json([
@@ -1533,7 +1533,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['ratings'] = '4.7';
                         $list['status'] = $appointment['status'];
                         $list['clinic_name'] = $clinic_name;
-                        $list['dr_name'] = $appointment['name'];
+                        $list['dr_name'] = $providerDetail['name'];
                         // $list['rating'] = $subcatDetail['rating'];
                         $cancelledArr[] = $list;
                     }
@@ -1563,7 +1563,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['ratings'] = '4.7';
                         $list['status'] = $appointment['status'];
                         $list['clinic_name'] = $clinic_name;
-                        $list['dr_name'] = $appointment['name'];
+                        $list['dr_name'] = $providerDetail['name'];
                         // $list['rating'] = $subcatDetail['rating'];
                         $cancelledArr[] = $list;
                     }
@@ -1593,7 +1593,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['address'] = $address;
                         $list['phone_no'] = $providerDetail['phone_no'];
                         $list['ratings'] = '4.7';
-                        $list['status'] = $appointment['status'];
+                        $list['status'] = $providerDetail['status'];
                         // $list['rating'] = $subcatDetail['rating'];
                         $cancelledArr[] = $list;
                     }
