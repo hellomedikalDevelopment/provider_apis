@@ -1490,23 +1490,19 @@ function getTimeSlot($interval, $start, $end){
                     ->get();
                     $histArr = [];
                     foreach ($getAppointments as $appointment) {
-                        // $getsubcatDetails = DB::table('subcat_store')
-                        // ->where('id',$appointment['store_id'])
-                        // ->select('logo','name','subcat_id','address','status','rating')
-                        // ->first();
-                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-                        // $serviceLogo = $subcatDetail['logo'];
-                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
+                        $providerDetail = Provider::where('id',$appointment['entity_id'])->first();
+                        $space = ' ';
+                        $clinic_name = 'RML Heart Institute';
+                        $address = $providerDetail['building_no'].$space.$providerDetail['town_city'].$space.$providerDetail['state'].$space.$providerDetail['country'].$space.$providerDetail['zipcode'];
+                        $serviceLogo = $providerDetail['profile_image'];
+                        $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
-                        // $list['appointment_type'] = $subcat_name['sub_cat_name'];
-                        $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
-                        // $list['auther_id'] = $appointment['store_id'];
-                        // $list['logo'] = $logo;
-                        // $list['location'] = $subcatDetail['address'];
-                        // $list['name'] = $subcatDetail['name'];
-                        // $list['status'] = $appointment['status'];
-                        // $list['rating'] = $subcatDetail['rating'];
+                        $list['profile_image'] = $logo;
+                        $list['created_at'] = $appointment['date'];
+                        $list['address'] = $address;
+                        $list['phone_no'] = $providerDetail['phone_no'];
+                        $list['ratings'] = '4.7';
+                        $list['status'] = $appointment['status'];
                         $histArr[] = $list;
                     }
                     return response()->json([
@@ -1516,26 +1512,23 @@ function getTimeSlot($interval, $start, $end){
                     ], $this->successStatus);
                 }elseif ($request->appointment_type == 2) {
                     $getAppointments = Appointment::where('user_id',$request->user_id)
-                    ->where('status','3')
+                    ->where('status','1')
                     ->orderBy('id','DESC')
                     ->get();
                     $cancelledArr = [];
                     foreach ($getAppointments as $appointment) {
-                        // $getsubcatDetails = DB::table('subcat_store')
-                        // ->where('id',$appointment['store_id'])
-                        // ->select('logo','name','subcat_id','address','status','rating')
-                        // ->first();
-                        // $subcatDetail = json_decode(json_encode($getsubcatDetails), true);
-                        // $subcat_name = Service_Subcategory::where('id',$subcatDetail['subcat_id'])->first();
-                        // $serviceLogo = $subcatDetail['logo'];
-                        // $logo = url('/').'/public/images/icon/'.$serviceLogo;
+                        $providerDetail = Provider::where('id',$appointment['entity_id'])->first();
+                        $space = ' ';
+                        $clinic_name = 'RML Heart Institute';
+                        $address = $providerDetail['building_no'].$space.$providerDetail['town_city'].$space.$providerDetail['state'].$space.$providerDetail['country'].$space.$providerDetail['zipcode'];
+                        $serviceLogo = $providerDetail['profile_image'];
+                        $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
-                        // $list['appointment_type'] = $subcat_name['sub_cat_name'];
-                        $list['created_at'] = $appointment['created_at']->format('Y-m-d h:i:s');
-                        // $list['auther_id'] = $appointment['store_id'];
-                        // $list['logo'] = $logo;
-                        // $list['location'] = $subcatDetail['address'];
-                        // $list['name'] = $subcatDetail['name'];
+                        $list['profile_image'] = $logo;
+                        $list['created_at'] = $appointment['date'];
+                        $list['address'] = $address;
+                        $list['phone_no'] = $providerDetail['phone_no'];
+                        $list['ratings'] = '4.7';
                         $list['status'] = $appointment['status'];
                         // $list['rating'] = $subcatDetail['rating'];
                         $cancelledArr[] = $list;
