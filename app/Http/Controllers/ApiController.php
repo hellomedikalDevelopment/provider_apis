@@ -1497,6 +1497,8 @@ function getTimeSlot($interval, $start, $end){
                         $serviceLogo = $providerDetail['profile_image'];
                         $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
+                        $list['provider_id'] = (String)$appointment['entity_id'];
+                        $list['department'] = $providerDetail['department']?$providerDetail['department']:'';
                         $list['profile_image'] = $logo;
                         $list['created_at'] = $appointment['date'];
                         $list['address'] = $address;
@@ -1526,6 +1528,8 @@ function getTimeSlot($interval, $start, $end){
                         $serviceLogo = $providerDetail['profile_image'];
                         $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
+                        $list['provider_id'] = (String)$appointment['entity_id'];
+                        $list['department'] = $providerDetail['department']?$providerDetail['department']:'';
                         $list['profile_image'] = $logo;
                         $list['created_at'] = $appointment['date'];
                         $list['address'] = $address;
@@ -1556,6 +1560,8 @@ function getTimeSlot($interval, $start, $end){
                         $serviceLogo = $providerDetail['profile_image'];
                         $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
+                        $list['provider_id'] = (String)$appointment['entity_id'];
+                        $list['department'] = $providerDetail['department']?$providerDetail['department']:'';
                         $list['profile_image'] = $logo;
                         $list['created_at'] = $appointment['date'];
                         $list['address'] = $address;
@@ -1586,6 +1592,8 @@ function getTimeSlot($interval, $start, $end){
                         $serviceLogo = $providerDetail['profile_image'];
                         $logo = url('/').'/public/images/provider_pictures/'.$serviceLogo;
                         $list['id'] = (String)$appointment['id'];
+                        $list['provider_id'] = (String)$appointment['entity_id'];
+                        $list['department'] = $providerDetail['department']?$providerDetail['department']:'';
                         $list['profile_image'] = $logo;
                         $list['clinic_name'] = $clinic_name;
                         $list['dr_name'] = $appointment['name'];
