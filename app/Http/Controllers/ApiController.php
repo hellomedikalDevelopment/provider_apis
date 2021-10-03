@@ -18,6 +18,7 @@ use App\Models\Appointment;
 use App\Models\Timeslot;
 use App\Models\Clinic_doctors;
 use App\Models\ProviderImage;
+use App\Models\Category;
 
 
 use Validator;
@@ -999,6 +1000,22 @@ public function getCities(Request $request){
    $cities = City::all();
    return response()->json(['status' => 1,'message' => 'Success','result'=>$cities]);
 
+}
+
+public function getCategories(Request $request){
+    $cities = Category::where('parent_id',0)->get();
+    $catArr = [];
+    foreach ($cities as $value) {
+        $subcategory = Category::where('parent_id',$value['id'])
+        ->select('id','name')
+        ->get();
+        $list['id'] = $value['id'];
+        $list['name'] = $value['name'];
+        $list['subcategories'] = $subcategory;
+        $catArr[] = $list;
+
+    }
+    return response()->json(['status' => 1,'message' => 'Success','cat'=>$catArr]);
 }
 
 /**************************************************************************/

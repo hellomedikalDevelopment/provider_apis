@@ -102,7 +102,7 @@ Route::post('/addReview', [ApiController::class, 'addReview']);
 Route::post('/findDoctor', [ApiController::class, 'findDoctor']);
 Route::post('/providerDetails', [ApiController::class, 'providerDetails']);
 Route::post('/preAppointmentDetails', [ApiController::class, 'preAppointmentDetails']);
-
+Route::get('/getCategories', [ApiController::class, 'getCategories']);
 /*User end*/
 
 /*
