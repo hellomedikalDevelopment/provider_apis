@@ -1109,7 +1109,6 @@ function getTimeSlot($interval, $start, $end){
     }
 
     public function findDoctor(Request $request){
-        // dd("jj");
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'type' => 'required',
@@ -1187,6 +1186,7 @@ function getTimeSlot($interval, $start, $end){
                             $list['phone_no'] = $pro['phone_no'];
                             $list['ratings'] = $pro['ratings'];
                             $list['logo'] = $logo;
+                            $list['availablity_type'] = $pro['visit_type'];
                             $list['isLiked'] = '0';
                             $providersArr[] = $list;
                         }
