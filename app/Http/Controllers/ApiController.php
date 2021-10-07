@@ -1279,7 +1279,7 @@ function getTimeSlot($interval, $start, $end){
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
             $provider = Provider::where('id',$request->provider_id)->first()->toArray();
-
+            print_r($provider);die();
             if ($provider) {
                 // if ($provider['provider_type'] == '1') {
                 //     # code...
@@ -1315,7 +1315,7 @@ function getTimeSlot($interval, $start, $end){
                 $provider['certification'] = $provider['certification']?$provider['certification']:'';
                 $provider['aboutyourself'] = $provider['aboutyourself']?$provider['aboutyourself']:'';
                 $provider['profile_image'] = $provider['profile_image']?$provider['profile_image']:'';
-                $provider['ratings'] = $provider['ratings']?$provider['ratings']:'';
+                $provider['ratings'] = $provider['ratings']?$provider['ratings']:'0.0';
                 $provider['profile_pic_uploaded'] = $provider['profile_pic_uploaded']?$provider['profile_pic_uploaded']:'';
                 $provider['account_status'] = $provider['account_status']?$provider['account_status']:'';
                 $provider['created_at'] = $provider['created_at']?$provider['created_at']:'';
@@ -1743,6 +1743,49 @@ function getTimeSlot($interval, $start, $end){
         }
     }
 
+    function getAndUpdateRatings ($id){
+        $getRating1 = Review::where('entity_id',$id)
+        ->where('rating','0.5')
+        ->orWhere('rating','1')
+        ->where('entity_id',$id)
+        ->orWhere('rating','1.5')
+        ->where('entity_id',$id)
+        ->count();
+        $getRating2 = Review::where('entity_id',$id)
+        ->where('rating','2')
+        ->orWhere('rating','2.0')
+        ->where('entity_id',$id)
+        ->orWhere('rating','2.5')
+        ->where('entity_id',$id)
+        ->count();
+        $getRating3 = Review::where('entity_id',$id)
+        ->where('rating','3')
+        ->orWhere('rating','3.0')
+        ->where('entity_id',$id)
+        ->orWhere('rating','3.5')
+        ->where('entity_id',$id)
+        ->count();
+        $getRating4 = Review::where('entity_id',$id)
+        ->where('rating','4')
+        ->orWhere('rating','4.0')
+        ->where('entity_id',$id)
+        ->orWhere('rating','4.5')
+        ->where('entity_id',$id)
+        ->count();
+        $getRating5 = Review::where('entity_id',$id)
+        ->where('rating','5')
+        ->orWhere('rating','5.0')
+        ->where('entity_id',$id)
+        ->count();
+        // print_r(json_encode($getRating5));die();
+        if ($getRating5 > 0 || $getRating4 > 0 || $getRating3 > 0 || $getRating2 > 0 || $getRating1 > 0) {
+            $getPer = (5*$getRating5 + 4*$getRating4 + 3*$getRating3 + 2*$getRating2 + 1*$getRating1) / ($getRating5+$getRating4+$getRating3+$getRating2+$getRating1);
+            return $getPer;
+        }else{
+            return 0;
+        }
+    }
+
     public function addReview(Request $request){
         $saveArray = $request->all();
         $validator = Validator::make($request->all(), [
@@ -1756,19 +1799,20 @@ function getTimeSlot($interval, $start, $end){
         }else{
             $review = str_replace("\n", " ", $request->review);
             $data['user_id'] = $request->user_id;
-            $data['entity_id'] = $request->entity_id?$request->entity_id:'';
+            $data['entity_id'] = $request->id?$request->id:'';
             $data['rating'] = $request->rating;
             $data['review'] = trim($review?$review:'');
             // dd($text);
             $insert = Review::insertGetId($data);
             if ($insert) {
                 /*update ratings*/
-                // $totalRating = Review::where('entity_id',$request->id)->count();
-                // // print_r($totalRating);die();
-                // $getPer = $this->getAndUpdateRatings($request->id);
-                // $rating = $getPer;
-                // $updateRatings = Store::where('id',$request->id)
-                // ->update(['rating' => $rating,'users' => $totalRating]);
+                $totalRating = Review::where('entity_id',$request->id)->count();
+                // print_r($totalRating);die();
+                $getPer = $this->getAndUpdateRatings($request->id);
+                // print_r($getPer);die();
+                $rating = $getPer;
+                $updateRatings = Provider::where('id',$request->id)
+                ->update(['ratings' => $rating]);
                 return response()->json([
                     'status'=>'true',
                     'message'=>'Review Added'
