@@ -1332,7 +1332,7 @@ function getTimeSlot($interval, $start, $end){
                     $user = User::where('id',$rate['user_id'])->first();
                     $ratelist['user_id'] = $user['id'];
                     $ratelist['name'] = $user['name'];
-                    $ratelist['image'] = url('/').'/public/images/user_pictures/'.$user['image'];
+                    $ratelist['image'] = url('/').'/images/user_pictures/'.$user['image'];
                     $ratelist['rating'] = $rate['rating'];
                     $ratelist['comment'] = $rate['review'];
                     $ratelist['datetime'] = $rate['created_at']->format('Y-m-d');
