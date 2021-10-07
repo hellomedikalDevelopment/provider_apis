@@ -1155,7 +1155,9 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->availablity_type){
-                        $q->whereIn('visit_type', [$request->availablity_type]);
+                        // $langs = explode(",", $request->availablity_type);
+                        // dd($langs);
+                        $q->where('visit_type','1');
                         // where('visit_type','like',$request->gender);
                     }
 
@@ -1338,13 +1340,6 @@ function getTimeSlot($interval, $start, $end){
                     $ratelist['datetime'] = $rate['created_at']->format('Y-m-d');
                     $customerRating[] = $ratelist;
                 }
-                // $customerRating[] = array(
-                //     'name'=> 'test user',
-                //     'image'=> url('/').'/public/images/user_pictures/default.jpg',
-                //     'rating'=> "4.0",
-                //     'comment'=> "test data",
-                //     'datetime'=> "2021-09-01 01:15"
-                // );
                 $ratingArray = array(
                     'overall_rating'=> $provider['ratings'],
                     'wait_time'=> "4.0",
@@ -1837,10 +1832,10 @@ function getTimeSlot($interval, $start, $end){
                 $totalRating = Review::where('entity_id',$request->id)->count();
                 // print_r($totalRating);die();
                 $getPer = $this->getAndUpdateRatings($request->id);
-                // print_r($getPer);die();
+                // print_r(round($getPer, 1));die();
                 $rating = $getPer;
                 $updateRatings = Provider::where('id',$request->id)
-                ->update(['ratings' => $rating]);
+                ->update(['ratings' => round($getPer, 1)]);
                 return response()->json([
                     'status'=>'true',
                     'message'=>'Review Added'
