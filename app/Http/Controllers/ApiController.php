@@ -19,12 +19,14 @@ use App\Models\Timeslot;
 use App\Models\Clinic_doctors;
 use App\Models\ProviderImage;
 use App\Models\Category;
-
+use DB;
+// use Hash;
+use Crypt;
 
 use Validator;
 use Illuminate\Support\Facades\Hash;
 
-use DB;
+// use DB;
 
 class ApiController extends Controller
 {
@@ -326,6 +328,109 @@ class ApiController extends Controller
         }
 
 
+    }
+
+    public function socialLogin(Request $request){
+        $saveArray = $request->all();
+        $validator = Validator::make($request->all(), [
+            'social_id' => 'required',
+            'name' =>'required',
+            'image' => 'required', #url of image from gmail or fb
+            'email' =>'required',
+            // 'login_type' =>'required' #G OR F
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'0'], $this->badrequest);
+        }
+        else{
+            $userExist = User::where('social_id',$saveArray['social_id'])->first();
+            if($userExist){
+                $updateData = [
+                    // 'device_id'=>$saveArray['device_id']?$saveArray['device_id']:$userExist['device_id'],
+                    // 'device_type'=>$saveArray['device_type']?$saveArray['device_type']:$userExist['device_type'],
+                    // 'login_type'=>$saveArray['login_type']?$saveArray['login_type']:$userExist['login_type'],
+                    'social_id'=>$saveArray['social_id']?$saveArray['social_id']:$userExist['social_id'],
+                    'name' => $saveArray['name']?$saveArray['name']:$userExist['name'],
+                    // 'username' => $saveArray['username']?$saveArray['username']:$userExist['username'],
+                    // 'email' => $saveArray['email']?$saveArray['email']:$userExist['email'],
+                    'image'=>$saveArray['image']?$saveArray['image']:$userExist['photo'],
+                    'updated_at'=>date('Y-m-d h:i:s')
+                ];
+                $update = User::where('social_id',$saveArray['social_id'])->update($updateData);
+                if ($update) {
+                    return response()->json([
+                        'message'=>'login successfully',
+                        'status'=>'1',
+                        'user_id'=>(String)$userExist['id'],
+                        'token'=>$userExist->remember_token,
+                    ], $this->successStatus);
+                }
+                else{
+                    return response()->json([
+                        'message'=>'login Failed. Please try again later.',
+                        'status'=>'0'
+                    ], $this->successStatus);
+                }
+            }else{
+                $checkEmail = User::where('email',$saveArray['email'])->first();
+                if ($checkEmail) {
+                    return response()->json([
+                        'message'=>'Email Already Exists!!',
+                        'status'=>'1',
+                        'remember_token' => $checkEmail['remember_token'],
+                        'user_id'=>(String)$checkEmail['id'],
+                    ], $this->successStatus);
+                }
+                // $checkUsername = User::where('username',$saveArray['username'])->first();
+                // if ($checkUsername) {
+                //     return response()->json([
+                //         'message'=>'Username Already Exists!!',
+                //         'status'=>'1',
+                //         'remember_token' => $checkUsername['remember_token'],
+                //         'user_id'=>(String)$checkUsername['id'],
+                //     ], $this->successStatus);
+                // }
+                $user = [
+                    // 'device_id'=>$saveArray['device_id']?$saveArray['device_id']:'',
+                    // 'device_type'=>$saveArray['device_type']?$saveArray['device_type']:'',
+                    'social_id'=>$saveArray['social_id'],
+                    // 'login_type'=>$saveArray['login_type'],
+                    'name' => $saveArray['name'],
+                    // 'name' => $saveArray['name'],
+                    'phone_no' => '',
+                    'password'=>'',
+                    'email' => $saveArray['email'],
+                    'image'=>$saveArray['image'],
+                    'remember_token' => '',
+                    'created_at' => date('Y-m-d h:i:s')
+                ];
+                $get_user_id =  User::insertGetId($user);
+                if (!empty($get_user_id)) {
+                    $random = (string)mt_rand(10,1000000);
+                    $token = (string)$get_user_id.$random;
+                    $token_en = Crypt::encrypt($token);
+                    $update_token = [
+                        'remember_token' => $token_en,
+                        'updated_at' => date('Y-m-d h:i:s')
+                    ];
+                    $update = User::where(['id'=>$get_user_id])->update($update_token);
+                    if($update){
+                        return response()->json([
+                            'message'=>'Registered successfully',
+                            'status'=>'1',
+                            'user_id'=>(String)$get_user_id,
+                            'token'=>$token_en,
+                        ], $this->successStatus);
+                    }
+                }
+                else{
+                    return response()->json([
+                        'message'=>'Signup Failed. Please try again later.',
+                        'status'=>'1'
+                    ], $this->successStatus);
+                }
+            }
+        }
     }
 
 /**************************************************************************/
