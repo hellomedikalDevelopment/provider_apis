@@ -1908,6 +1908,7 @@ function getTimeSlot($interval, $start, $end){
         // print_r(json_encode($getRating5));die();
         if ($getRating5 > 0 || $getRating4 > 0 || $getRating3 > 0 || $getRating2 > 0 || $getRating1 > 0) {
             $getPer = (5*$getRating5 + 4*$getRating4 + 3*$getRating3 + 2*$getRating2 + 1*$getRating1) / ($getRating5+$getRating4+$getRating3+$getRating2+$getRating1);
+            // print_r($getPer);die();
             return $getPer;
         }else{
             return 0;
