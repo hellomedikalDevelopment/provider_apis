@@ -1279,7 +1279,7 @@ function getTimeSlot($interval, $start, $end){
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
             $provider = Provider::where('id',$request->provider_id)->first()->toArray();
-            print_r($provider);die();
+            // print_r($provider);die();
             if ($provider) {
                 // if ($provider['provider_type'] == '1') {
                 //     # code...
