@@ -1291,7 +1291,7 @@ function getTimeSlot($interval, $start, $end){
                 $provider['id'] = $provider['id'];
                 $provider['provider_type'] = $provider['provider_type']?$provider['provider_type']:'';
                 $provider['name'] = $provider['name']?$provider['name']:'';
-                $provider['email'] = $provider['id']?$provider['id']:'';
+                $provider['email'] = $provider['email']?$provider['email']:'';
                 $provider['phone_no'] = $provider['phone_no']?$provider['phone_no']:'';
                 $provider['gender'] = $provider['gender']?$provider['gender']:'';
                 $provider['address_type'] = $provider['address_type']?$provider['address_type']:'';
