@@ -1053,6 +1053,7 @@ function getTimeSlot($interval, $start, $end){
             'is_new_customer' => 'required',
             'has_qurantine' => 'required',
             'phone_number' => 'required',
+            'availablity_type' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
@@ -1082,6 +1083,7 @@ function getTimeSlot($interval, $start, $end){
                     $data['date'] = $request->date;
                     $data['datetime'] = $request->date.$space.$request->start_time;
                     $data['phone_number'] = $request->phone_number;
+                    $data['availablity_type'] = $request->availablity_type;
                     $data['note'] = $request->note?$request->note:'';
                     $appointment_id = Appointment::insertGetId($data);
                     if ($appointment_id) {
@@ -1154,7 +1156,8 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->availablity_type){
-                        $q->where('visit_type','like',$request->gender);
+                        $q->whereIn('visit_type', [$request->availablity_type]);
+                        // where('visit_type','like',$request->gender);
                     }
 
                     if ($request->availablity_time){
@@ -1218,7 +1221,8 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->availablity_type){
-                        $q->where('visit_type','like',$request->gender);
+                        $q->whereIn('visit_type', [$request->availablity_type]);
+                        // where('visit_type','like',$request->gender);
                     }
 
                     if ($request->availablity_time){
@@ -1534,6 +1538,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['status'] = $appointment['status'];
                         $list['clinic_name'] = $clinic_name;
                         $list['dr_name'] = $providerDetail['name'];
+                        $list['availablity_type'] = $appointment['availablity_type'];
                         $histArr[] = $list;
                     }
                     return response()->json([
@@ -1566,6 +1571,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['clinic_name'] = $clinic_name;
                         $list['dr_name'] = $providerDetail['name'];
                         // $list['rating'] = $subcatDetail['rating'];
+                        $list['availablity_type'] = $appointment['availablity_type'];
                         $cancelledArr[] = $list;
                     }
                     return response()->json([
@@ -1598,6 +1604,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['clinic_name'] = $clinic_name;
                         $list['dr_name'] = $providerDetail['name'];
                         // $list['rating'] = $subcatDetail['rating'];
+                        $list['availablity_type'] = $appointment['availablity_type'];
                         $cancelledArr[] = $list;
                     }
                     return response()->json([
@@ -1630,6 +1637,7 @@ function getTimeSlot($interval, $start, $end){
                         $list['ratings'] = '4.7';
                         $list['status'] = $providerDetail['status'];
                         // $list['rating'] = $subcatDetail['rating'];
+                        $list['availablity_type'] = $appointment['availablity_type'];
                         $cancelledArr[] = $list;
                     }
                     return response()->json([
