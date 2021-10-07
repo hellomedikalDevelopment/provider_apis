@@ -1326,15 +1326,27 @@ function getTimeSlot($interval, $start, $end){
                 $provider['highly_recommended'] = "93% of patient gave this doctor 5 stars";
                 $provider['excellent_wait_time'] = "100% of patient waited less than 30 minutes";
                 $provider['new_patient_appointment'] = "Appointment available for new patient on HelloMedikal app";
-                $customerRating[] = array(
-                    'name'=> 'test user',
-                    'image'=> url('/').'/public/images/user_pictures/default.jpg',
-                    'rating'=> "4.0",
-                    'comment'=> "test data",
-                    'datetime'=> "2021-09-01 01:15"
-                );
+                $getRatings = Review::where('entity_id',$request->provider_id)->get();
+                $customerRating = [];
+                foreach ($getRatings as $rate) {
+                    $user = User::where('id',$rate['user_id'])->first();
+                    $ratelist['user_id'] = $user['id'];
+                    $ratelist['name'] = $user['name'];
+                    $ratelist['image'] = url('/').'/public/images/user_pictures/'.$user['image'];
+                    $ratelist['rating'] = $rate['rating'];
+                    $ratelist['comment'] = $rate['review'];
+                    $ratelist['datetime'] = $rate['created_at']->format('Y-m-d');
+                    $customerRating[] = $ratelist;
+                }
+                // $customerRating[] = array(
+                //     'name'=> 'test user',
+                //     'image'=> url('/').'/public/images/user_pictures/default.jpg',
+                //     'rating'=> "4.0",
+                //     'comment'=> "test data",
+                //     'datetime'=> "2021-09-01 01:15"
+                // );
                 $ratingArray = array(
-                    'overall_rating'=> "5.0",
+                    'overall_rating'=> $provider['ratings'],
                     'wait_time'=> "4.0",
                     'bedside_manner'=> "5.0",
                     'ratingArray'=>$customerRating
