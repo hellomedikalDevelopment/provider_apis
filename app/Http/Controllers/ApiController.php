@@ -1455,9 +1455,26 @@ function getTimeSlot($interval, $start, $end){
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
         }else{
             $specialization = array (
-              array("kaiser foundation group"),
-              array("United Health Group"),
-              array("Wellpoint Inc Group"),
+              array("Dentist"),
+              array("Gynecology"),
+              array("Ophthalmology"),
+              array("ICU"),
+              array("Cardiology"),
+              array("Pulmonologist"),
+              array("Physiotherapist"),
+              array("Dermatologist"),
+              array("Urologist"),
+              array("GS"),
+              array("Neurologist"),
+              array("GIT"),
+              array("ENT"),
+              array("Orthopedic"),
+              array("Oncologist"),
+              array("Neurosurgeon"),
+              array("Radiologist"),
+              array("Rheumatologist"),
+              array("Endocrinologist"),
+              array("Immunologist"),
             );
             $specsArr = [];
             foreach($specialization as $specs){
@@ -1466,9 +1483,8 @@ function getTimeSlot($interval, $start, $end){
             }
 
             $insurance = array (
-              array("kaiser foundation group"),
-              array("United Health Group"),
-              array("Wellpoint Inc Group"),
+              array("Accepted"),
+              array("Not Accepted"),
             );
             $incsArr = [];
             foreach($insurance as $inc){
@@ -1528,7 +1544,7 @@ function getTimeSlot($interval, $start, $end){
             if ($checkUser) {
                 if ($request->appointment_type == 1) {
                     $getAppointments = Appointment::where('user_id',$request->user_id)
-                    ->where('status','1')
+                    ->where('status','2')
                     ->orderBy('id','DESC')
                     ->get();
                     $histArr = [];
@@ -1560,7 +1576,7 @@ function getTimeSlot($interval, $start, $end){
                     ], $this->successStatus);
                 }elseif ($request->appointment_type == 2) {
                     $getAppointments = Appointment::where('user_id',$request->user_id)
-                    ->where('status','2')
+                    ->where('status','1')
                     ->orderBy('id','DESC')
                     ->get();
                     $cancelledArr = [];
