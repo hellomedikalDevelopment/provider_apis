@@ -1260,10 +1260,8 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->availablity_type){
-                        // $langs = explode(",", $request->availablity_type);
-                        // dd($langs);
-                        $q->where('visit_type','1');
-                        // where('visit_type','like',$request->gender);
+                        $q->whereRaw('FIND_IN_SET('.$request->availablity_type.',visit_type)');
+                        // $q->whereRaw("find_in_set('2',visit_type)");
                     }
 
                     if ($request->availablity_time){
@@ -1278,7 +1276,8 @@ function getTimeSlot($interval, $start, $end){
                         $q->where('ratings','like',$request->avg_rating);
                     }
 
-                    $providers = $q->orderBy('id','DESC')->get();
+                    $providers = $q->where('provider_type',$request->type)
+                    ->orderBy('id','DESC')->get();
                     // print_r($providers);die();
                     $providersArr = [];
                         foreach ($providers as $pro) {
@@ -1328,7 +1327,7 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->availablity_type){
-                        $q->whereIn('visit_type', [$request->availablity_type]);
+                        $q->whereRaw('FIND_IN_SET('.$request->availablity_type.',visit_type)');
                         // where('visit_type','like',$request->gender);
                     }
 
@@ -1344,7 +1343,8 @@ function getTimeSlot($interval, $start, $end){
                         $q->where('ratings','like',$request->avg_rating);
                     }
 
-                    $providers = $q->orderBy('id','DESC')->get();
+                    $providers = $q->where('provider_type',$request->type)
+                    ->orderBy('id','DESC')->get();
                     $providersArr = [];
                     foreach ($providers as $pro) {
                         $logo = url('/').'/public/images/provider_pictures/'.$pro['profile_image'];
@@ -1938,10 +1938,11 @@ function getTimeSlot($interval, $start, $end){
                 $totalRating = Review::where('entity_id',$request->id)->count();
                 // print_r($totalRating);die();
                 $getPer = $this->getAndUpdateRatings($request->id);
-                // print_r(round($getPer, 1));die();
-                $rating = $getPer;
+                $rating = round($getPer, 1);
+                // die();
+                // $rating = $getPer;
                 $updateRatings = Provider::where('id',$request->id)
-                ->update(['ratings' => round($getPer, 1)]);
+                ->update(['ratings' => $rating]);
                 return response()->json([
                     'status'=>'true',
                     'message'=>'Review Added'
