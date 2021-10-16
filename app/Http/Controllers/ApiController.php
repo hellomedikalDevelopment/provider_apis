@@ -1357,6 +1357,7 @@ function getTimeSlot($interval, $start, $end){
                             $list['country'] = $pro['country'];
                             $list['phone_no'] = $pro['phone_no'];
                             $list['ratings'] = $pro['ratings'];
+                            $list['availablity_type'] = $pro['visit_type'];
                             $list['logo'] = $logo;
                             $list['isLiked'] = '0';
                             $providersArr[] = $list;
@@ -1388,9 +1389,61 @@ function getTimeSlot($interval, $start, $end){
             $provider = Provider::where('id',$request->provider_id)->first()->toArray();
             // print_r($provider);die();
             if ($provider) {
-                // if ($provider['provider_type'] == '1') {
-                //     # code...
-                // }
+                if ($provider['provider_type'] == '1') { //doc
+                        $slotArray = array (
+                            array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
+                        );
+                        $slots = array(
+                            array(
+                                'clinic_id'=> "1",
+                                'clinic_name'=> "dummy clinic",
+                                'clinic_address'=> "raw test, witting 517 app 1547",
+                                'clinic_phone'=> "+178542586",
+                                'slots'=> $slotArray,
+                            ),
+                            array(
+                                'clinic_id'=> "2",
+                                'clinic_name'=> "Hans Raj clinic",
+                                'clinic_address'=> "raw test, witting 517 app 1547",
+                                'clinic_phone'=> "+178542586",
+                                'slots'=> $slotArray,
+                            ),
+                            array(
+                                'clinic_id'=> "3",
+                                'clinic_name'=> "dummy clinic",
+                                'clinic_address'=> "raw test, witting 517 app 1547",
+                                'clinic_phone'=> "+178542586",
+                                'slots'=> $slotArray,
+                            )
+                        );
+                }elseif($provider['provider_type'] == '2'){ // clinic
+                    $slotArray = array (
+                            array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
+                            array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
+                        );
+                        $slots = array(
+                                    'clinic_id'=> "1",
+                                    'clinic_name'=> "dummy clinic",
+                                    'clinic_address'=> "raw test, witting 517 app 1547",
+                                    'clinic_phone'=> "+178542586",
+                                    'slots'=> $slotArray,
+                                );
+                }
                 $space = ' ';
                 $provider['clinic_name'] = 'RML Heart Institute';
                 $provider['address'] = $provider['building_no'].$space.$provider['town_city'].$space.$provider['state'].$space.$provider['country'].$space.$provider['zipcode'];
@@ -1492,40 +1545,6 @@ function getTimeSlot($interval, $start, $end){
                     $imgList['image']  = url('/').'/storage/provider_media/'.$imgs['image'];
                     $imgArr[] = $imgList;
                 }
-                $slotArray = array (
-                    array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
-                    array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
-                );
-                $slots = array(
-                    array(
-                        'clinic_id'=> "1",
-                        'clinic_name'=> "dummy clinic",
-                        'clinic_address'=> "raw test, witting 517 app 1547",
-                        'clinic_phone'=> "+178542586",
-                        'slots'=> $slotArray,
-                    ),
-                    array(
-                        'clinic_id'=> "2",
-                        'clinic_name'=> "Hans Raj clinic",
-                        'clinic_address'=> "raw test, witting 517 app 1547",
-                        'clinic_phone'=> "+178542586",
-                        'slots'=> $slotArray,
-                    ),
-                    array(
-                        'clinic_id'=> "3",
-                        'clinic_name'=> "dummy clinic",
-                        'clinic_address'=> "raw test, witting 517 app 1547",
-                        'clinic_phone'=> "+178542586",
-                        'slots'=> $slotArray,
-                    )
-                );
                 
                 $providerArray = array(
                     'providerDetails'=>$provider,
