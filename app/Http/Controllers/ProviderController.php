@@ -66,7 +66,7 @@ class ProviderController extends Controller
                 $newUser->phone_no = $request->phone_no;
                 $newUser->gender = $request->gender;
                 $newUser->address_type = $request->address_type;
-                $newUser->visit_type = $request->visit_type;
+                $newUser->visit_type = str_replace(str_split('\\/:*?"<>|[]"'), '', $request->visit_type);
                 $newUser->department = $request->department;
                 $newUser->country = $request->country;
                 $newUser->state = $request->state;
@@ -242,6 +242,8 @@ class ProviderController extends Controller
                 $reapeat_schedule = str_replace(str_split('\\/:*?"<>|[]"'), '', $schlist);
                 $aflist = $saveArray['affilation'];
                 $new_aflist = str_replace(str_split('\\/:*?"<>|[]"'), '', $aflist);
+                $visit = $saveArray['visit_type'];
+                $visit_type = str_replace(str_split('\\/:*?"<>|[]"'), '', $visit);
 
                 $updateProfile = [
                     'name'=>$saveArray['name']?$saveArray['name']:$userExist['name'],
@@ -256,7 +258,7 @@ class ProviderController extends Controller
                     'open_from'=>$saveArray['open_from']?$saveArray['open_from']:$userExist['open_from'],
                     'open_to'=>$saveArray['open_to']?$saveArray['open_to']:$userExist['open_to'],
                     'reapeat_schedule'=>$reapeat_schedule?$reapeat_schedule:$userExist['reapeat_schedule'],
-                    'visit_type'=>$saveArray['visit_type']?$saveArray['visit_type']:$userExist['visit_type'],
+                    'visit_type'=>$visit_type?$visit_type:$userExist['visit_type'],
                     'specialization'=>$new_splist?$new_splist:$userExist['specialization'],
                     'area'=>$saveArray['area']?$saveArray['area']:$userExist['area'],
                     'education'=>$saveArray['education']?$saveArray['education']:$userExist['education'],
