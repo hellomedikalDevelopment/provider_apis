@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:C2ubbQAoBh7DoQOo+09ez/ufF2YjA99Wen7u5w5aBVA=',
+    'key' => 'base64:VcuE6PneNs8eEBMrDu8uLN9AXw2T8VKa/cm3RuslSv8=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -183,7 +183,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/var/www/html/chat-laravel/provider_apis/storage/framework/cache/data',
+        'path' => '/var/www/html/provider_apis/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -262,7 +262,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,7 +272,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'unix_socket' => '',
@@ -292,7 +292,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -307,7 +307,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hello_hm',
+        'database' => 'providerapp',
         'username' => 'root',
         'password' => 'Amit@123',
         'charset' => 'utf8',
@@ -350,12 +350,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/chat-laravel/provider_apis/storage/app',
+        'root' => '/var/www/html/provider_apis/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/chat-laravel/provider_apis/storage/app/public',
+        'root' => '/var/www/html/provider_apis/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -372,7 +372,7 @@
     ),
     'links' => 
     array (
-      '/var/www/html/chat-laravel/provider_apis/public/storage' => '/var/www/html/chat-laravel/provider_apis/storage/app/public',
+      '/var/www/html/provider_apis/public/storage' => '/var/www/html/provider_apis/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -406,13 +406,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/var/www/html/chat-laravel/provider_apis/storage/logs/laravel.log',
+        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/var/www/html/chat-laravel/provider_apis/storage/logs/laravel.log',
+        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -422,7 +422,7 @@
         'url' => NULL,
         'username' => 'Laravel Log',
         'emoji' => ':boom:',
-        'level' => 'critical',
+        'level' => 'debug',
       ),
       'papertrail' => 
       array (
@@ -463,7 +463,7 @@
       ),
       'emergency' => 
       array (
-        'path' => '/var/www/html/chat-laravel/provider_apis/storage/logs/laravel.log',
+        'path' => '/var/www/html/provider_apis/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -475,8 +475,8 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
-        'port' => '2525',
+        'host' => 'mailhog',
+        'port' => '1025',
         'encryption' => NULL,
         'username' => NULL,
         'password' => NULL,
@@ -520,7 +520,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/var/www/html/chat-laravel/provider_apis/resources/views/vendor/mail',
+        0 => '/var/www/html/provider_apis/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -599,11 +599,11 @@
   ),
   'session' => 
   array (
-    'driver' => 'database',
+    'driver' => 'file',
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/var/www/html/chat-laravel/provider_apis/storage/framework/sessions',
+    'files' => '/var/www/html/provider_apis/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -623,9 +623,9 @@
   array (
     'paths' => 
     array (
-      0 => '/var/www/html/chat-laravel/provider_apis/resources/views',
+      0 => '/var/www/html/provider_apis/resources/views',
     ),
-    'compiled' => '/var/www/html/chat-laravel/provider_apis/storage/framework/views',
+    'compiled' => '/var/www/html/provider_apis/storage/framework/views',
   ),
   'flare' => 
   array (
