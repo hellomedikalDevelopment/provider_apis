@@ -1213,6 +1213,60 @@ function getTimeSlot($interval, $start, $end){
         }
     }
 
+    public function findDoctorByCat(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'category' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
+        }else{
+            // $q = Provider::query();
+            // if ($request->category){
+            //     $q->whereRaw('FIND_IN_SET('.$request->category.',specialization)');
+            // }
+            // $providers = $q->orderBy('id','DESC')->get();
+            $search = $request->category;
+
+            $providers = Provider::select("providers.*")
+
+            ->whereRaw("find_in_set('".$search."',providers.specialization)")
+
+            ->get();
+            if ($providers) {
+                $providersArr = [];
+                    foreach ($providers as $pro) {
+                        $logo = url('/').'/images/provider_pictures/'.$pro['profile_image'];
+                        $list['provider_id'] = (String)$pro['id'];
+                        $list['provider_type'] = (String)$pro['provider_type'];
+                        $list['name'] = $pro['name'];
+                        $list['building_no'] = $pro['building_no'];
+                        $list['town_city'] = $pro['town_city'];
+                        $list['state'] = $pro['state'];
+                        $list['country'] = $pro['country'];
+                        $list['phone_no'] = $pro['phone_no'];
+                        $list['ratings'] = $pro['ratings'];
+                        $list['logo'] = $logo;
+                        $list['availablity_type'] = $pro['visit_type'];
+                        $list['isLiked'] = '0';
+                        $providersArr[] = $list;
+                    }
+                    return response()->json([
+                        'status'=>'true',
+                        'message'=>'data fetched successfully',
+                        'data'=>$providersArr
+                    ], $this->successStatus);
+            }else{
+                $providersArr = [];
+                return response()->json([
+                    'status'=>'true',
+                    'message'=>'data fetched successfully',
+                    'data'=>$providersArr
+                ], $this->successStatus);
+            }
+        }
+    }
+
     public function findDoctor(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
@@ -1236,6 +1290,14 @@ function getTimeSlot($interval, $start, $end){
             if($userExist){
                 if ($request->type == '1') {
                     $q = Provider::query();
+                    if ($request->keyword){
+                        $q->where('name','like',$request->keyword);
+                        $q->orWhere('country','like',$request->keyword);
+                        $q->orWhere('town_city','like',$request->keyword);
+                        $q->orWhere('state','like',$request->keyword);
+                        $q->orWhere('gender','like',$request->keyword);
+                        $q->orWhere('ratings','like',$request->keyword);
+                    }
                     if ($request->country){
                         $q->where('country','like',$request->country);
                     }
@@ -1244,7 +1306,8 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->specility){
-                        $q->where('specialization','like',$request->specility);
+                        $q->whereRaw('FIND_IN_SET('.$request->specility.',specialization)');
+                        // $q->where('specialization','like',$request->specility);
                     }
 
                     if ($request->insurance){
@@ -1303,6 +1366,14 @@ function getTimeSlot($interval, $start, $end){
                         ], $this->successStatus);
                 }elseif($request->type == '2'){
                     $q = Provider::query();
+                    if ($request->keyword){
+                        $q->where('name','like',$request->keyword);
+                        $q->orWhere('country','like',$request->keyword);
+                        $q->orWhere('town_city','like',$request->keyword);
+                        $q->orWhere('state','like',$request->keyword);
+                        $q->orWhere('gender','like',$request->keyword);
+                        $q->orWhere('ratings','like',$request->keyword);
+                    }
                     if ($request->country){
                         $q->where('country','like',$request->country);
                     }
@@ -1311,7 +1382,8 @@ function getTimeSlot($interval, $start, $end){
                     }
 
                     if ($request->specility){
-                        $q->where('specialization','like',$request->specility);
+                        $q->whereRaw('FIND_IN_SET('.$request->specility.',specialization)');
+                        // $q->where('specialization','like',$request->specility);
                     }
 
                     if ($request->insurance){
@@ -1381,7 +1453,8 @@ function getTimeSlot($interval, $start, $end){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'provider_id' => 'required',
-            'date' => 'required'
+            'date' => 'required',
+            // 'provider_type' => 'required' //1 for doc 2 for clinic
         ]);
         if ($validator->fails()) {
             return response()->json(['message'=>$validator->errors()->first(),'status'=>'false'], $this->badrequest);
@@ -1425,24 +1498,47 @@ function getTimeSlot($interval, $start, $end){
                             )
                         );
                 }elseif($provider['provider_type'] == '2'){ // clinic
-                    $slotArray = array (
-                            array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
-                            array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
-                        );
-                        $slots = array(
-                                    'clinic_id'=> "1",
-                                    'clinic_name'=> "dummy clinic",
-                                    'clinic_address'=> "raw test, witting 517 app 1547",
-                                    'clinic_phone'=> "+178542586",
-                                    'slots'=> $slotArray,
-                                );
+                    // $slotArray = array (
+                    //         array('id'=> "1",'time'=> "09:00 AM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "2",'time'=> "10:00 AM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "3",'time'=> "11:00 AM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "4",'time'=> "12:00 AM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "5",'time'=> "01:00 PM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "6",'time'=> "02:00 PM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "7",'time'=> "03:00 PM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "8",'time'=> "04:00 PM",'is_booked'=> "0",'status'=> "0"),
+                    //         array('id'=> "9",'time'=> "05:00 PM",'is_booked'=> "0",'status'=> "0")
+                    //     );
+                    //     $slots = array(
+                    //         'clinic_id'=> "1",
+                    //         'clinic_name'=> "dummy clinic",
+                    //         'clinic_address'=> "raw test, witting 517 app 1547",
+                    //         'clinic_phone'=> "+178542586",
+                    //         'slots'=> $slotArray,
+                    //     );
+                    $doctors = DB::table('clinic_doctors')
+                    ->where('clinic_id',$request->provider_id)
+                    ->get();
+                    $docArr = json_decode($doctors, true);
+                    $slots = [];
+                    foreach ($docArr as $pro) {
+                        $prov = Provider::where('id',$pro['doctor_id'])->first();
+                        $logo = url('/').'/public/images/provider_pictures/'.$prov['profile_image'];
+                        $list['provider_id'] = (String)$prov['id'];
+                        $list['provider_type'] = (String)$prov['provider_type'];
+                        $list['name'] = $prov['name'];
+                        $list['building_no'] = $prov['building_no'];
+                        $list['town_city'] = $prov['town_city'];
+                        $list['state'] = $prov['state'];
+                        $list['country'] = $prov['country'];
+                        $list['phone_no'] = $prov['phone_no'];
+                        $list['ratings'] = $prov['ratings'];
+                        $list['availablity_type'] = $prov['visit_type'];
+                        $list['logo'] = $logo;
+                        $list['isLiked'] = '0';
+                        $slots[] = $list;
+                    }
+                    // print_r($slotArray);die();
                 }
                 $space = ' ';
                 $provider['clinic_name'] = 'RML Heart Institute';

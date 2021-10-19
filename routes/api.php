@@ -100,6 +100,7 @@ Route::post('/appointHistoryandUpcomming', [ApiController::class, 'appointHistor
 Route::post('/reorderandCancel', [ApiController::class, 'reorderandCancel']);
 Route::post('/addReview', [ApiController::class, 'addReview']);
 Route::post('/findDoctor', [ApiController::class, 'findDoctor']);
+Route::post('/findDoctorByCat', [ApiController::class, 'findDoctorByCat']);
 Route::post('/providerDetails', [ApiController::class, 'providerDetails']);
 Route::post('/preAppointmentDetails', [ApiController::class, 'preAppointmentDetails']);
 Route::get('/getCategories', [ApiController::class, 'getCategories']);
